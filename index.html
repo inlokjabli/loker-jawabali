@@ -38,8 +38,9 @@
       padding: 15px;
       border-bottom: 2px solid limegreen;
       position: sticky;
-      top: 58px; /* supaya tidak menimpa site-header */
+      top: 58px;
       z-index: 1500;
+      background-color: #000;
     }
 
     nav a {
@@ -60,7 +61,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      padding: 100px 30px 120px; /* ⬅️ tambahkan bottom padding lebih besar */
+      padding: 100px 30px 60px;
       max-width: 1200px;
       margin: auto;
     }
@@ -118,11 +119,33 @@
     .footer-links a:hover {
       color: limegreen;
     }
-    
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav a, .footer-links a {
+        font-size: 16px;
+      }
+
+      .card-title {
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      .grid-container {
+        padding: 120px 10px 80px;
+      }
+
+      footer {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
-
   <!-- ✅ Header Judul -->
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
@@ -134,7 +157,6 @@
 
   <!-- ✅ Grid Lowongan -->
   <div class="grid-container">
-
     <!-- 🔗 Loker 1 -->
     <a href="loker-sales-dm.html" class="card-link">
       <div class="card">
@@ -151,14 +173,14 @@
       </div>
     </a>
   </div>
-  
-<!-- ✅ Footer -->
-<footer>
-  <div class="footer-links">
-    <a href="privacy-policy.html">Privasi</a>
-    <a href="note.html">Note</a>
-    <a href="about.html">About</a>
-  </div>
-</footer>
+
+  <!-- ✅ Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
 </body>
 </html>
