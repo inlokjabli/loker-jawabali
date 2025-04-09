@@ -6,18 +6,74 @@
   <title>Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</title>
   <meta name="description" content="Lowongan kerja Multimedia Nusantara School (MNS) Gading Serpong">
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Permanent+Marker&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
+      background-color: #000;
       color: #eee;
-      padding: 20px;
-      line-height: 1.6;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
-      color: limegreen;
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #000;
+      color: #39ff14;
       text-align: center;
+      padding: 12px 0;
+      font-size: 26px;
+      font-weight: bold;
+      font-family: 'Permanent Marker', cursive;
+      z-index: 2000;
+      border-bottom: 2px solid limegreen;
     }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px;
+      background: #1a1a1a;
+      border-bottom: 2px solid limegreen;
+      position: sticky;
+      top: 58px;
+      z-index: 1500;
+    }
+
+    nav a {
+      font-family: 'Coming Soon', cursive;
+      color: #ccc;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: limegreen;
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 120px auto 50px;
+      padding: 2rem;
+      background-color: #111;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #39ff14;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
     img {
       max-width: 100%;
       height: auto;
@@ -25,61 +81,98 @@
       margin: 20px auto;
       border-radius: 10px;
     }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      color: #4fc3f7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
     .button {
       display: block;
       width: fit-content;
-      margin: 30px auto;
-      padding: 10px 20px;
+      margin: 30px auto 10px;
+      padding: 12px 24px;
       background-color: limegreen;
       color: black;
       text-decoration: none;
       font-weight: bold;
       border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: green;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <h1>Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</h1>
 
-  <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
+  <!-- Header dan Navigasi -->
+  <div class="site-header">
+    Info Lowongan Kerja Jawa–Bali
+  </div>
 
-  <p><strong>Multimedia Nusantara School (MNS) in Gading Serpong, Tangerang</strong> invites you to join our team for new Academic Year 2025/2026</p>
-  
-  <ul>
-    <li>Scan the barcode or also click: <a href="https://tinyurl.com/MNS2526">https://tinyurl.com/MNS2526</a> for more detailed information.</li>
-    <li>Let's discover your talents based on your work experience and join our team!</li>
-    <li>Visit us: <a href="http://mns.sch.id">mns.sch.id</a></li>
-  </ul>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </nav>
 
-  <p><strong>Deadline:</strong> 8 March 2025</p>
+  <!-- Konten -->
+  <div class="container">
+    <h1>Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</h1>
 
-  <a class="button" href="mailto:recruitment@umn.ac.id" target="_blank">LAMAR SEKARANG</a>
+    <img src="https://inlokjabli.github.io/inlokjabli/gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
+
+    <p><strong>Multimedia Nusantara School (MNS) in Gading Serpong, Tangerang</strong> invites you to join our team for new Academic Year 2025/2026</p>
+    
+    <ul>
+      <li>Scan the barcode or also click: <a href="https://tinyurl.com/MNS2526">https://tinyurl.com/MNS2526</a> for more detailed information.</li>
+      <li>Let's discover your talents based on your work experience and join our team!</li>
+      <li>Visit us: <a href="http://mns.sch.id">mns.sch.id</a></li>
+    </ul>
+
+    <p><strong>Deadline:</strong> 8 Maret 2025</p>
+
+    <a class="button" href="mailto:recruitment@umn.ac.id" target="_blank">LAMAR SEKARANG</a>
+  </div>
 
   <!-- Schema.org markup for Google Jobs -->
-<script type="application/ld+json">
-{
-	"@context": "http://schema.org/",
-	"@type": "JobPosting",
-	"title" : "Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong",
-	"description" : "Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong",
-	"datePosted" : "2025-03-25",
-	"validThrough" : "2025-04-15",
-	"hiringOrganization": {
-		"@type": "Organization",
-		"sameAs": "mns.sch.id",
-		"name": "Multimedia Nusantara School (MNS)"
-	},
-	"employmentType": ["FULL_TIME"],
-	"jobLocation": {
-		"@type": "Place",
-		"address": {
-			"streetAddress": "",
-			"addressLocality": "Tangerang",
-			"addressRegion": "Jawa Barat",
-			"addressCountry": "Indonesia"
-		}
-	}
-}
-</script>
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "JobPosting",
+    "title" : "Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong",
+    "description" : "Multimedia Nusantara School (MNS) in Gading Serpong membuka lowongan kerja tahun ajaran 2025/2026. Klik link untuk info lengkap dan pendaftaran.",
+    "datePosted" : "2025-03-25",
+    "validThrough" : "2025-04-15",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "sameAs": "http://mns.sch.id",
+      "name": "Multimedia Nusantara School (MNS)"
+    },
+    "employmentType": ["FULL_TIME"],
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "addressLocality": "Tangerang",
+        "addressRegion": "Banten",
+        "addressCountry": "Indonesia"
+      }
+    }
+  }
+  </script>
 </body>
 </html>
