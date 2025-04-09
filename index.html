@@ -7,11 +7,11 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: #000;
       margin: 0;
       padding: 0;
     }
-    /* 🔼 Navbar */
+
     nav {
       display: flex;
       justify-content: center;
@@ -31,12 +31,12 @@
     nav a:hover {
       color: limegreen;
       text-decoration: underline;
-    }   
+    }
 
     h1 {
       text-align: center;
       margin-top: 30px;
-      color: #333;
+      color: white;
     }
 
     .grid-container {
@@ -60,10 +60,21 @@
       transform: translateY(-5px);
     }
 
+    .card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
     .card img {
       width: 100%;
       height: auto;
       display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05); /* Zoom in */
     }
 
     .card-content {
@@ -74,21 +85,6 @@
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 10px;
-    }
-
-    .card-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: white;
-      background-color: limegreen;
-      padding: 8px 12px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .card-link:hover {
-      background-color: green;
     }
   </style>
 </head>
@@ -106,24 +102,25 @@
 
     <!-- 🔗 Loker 1 -->
     <div class="card">
-      <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
-      <div class="card-content">
-        <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
-        <a class="card-link" href="loker-sales-dm.html">Lihat Detail</a>
-      </div>
+      <a href="loker-sales-dm.html">
+        <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
+        <div class="card-content">
+          <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
+        </div>
+      </a>
     </div>
 
     <!-- 🔗 Loker 2 -->
     <div class="card">
-      <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
-      <div class="card-content">
-        <div class="card-title">Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</div>
-        <a class="card-link" href="loker-multimedia-nusantara.html">Lihat Detail</a>
-      </div>
+      <a href="loker-multimedia-nusantara.html">
+        <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
+        <div class="card-content">
+          <div class="card-title">Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</div>
+        </div>
+      </a>
     </div>
-  </div>
 
-    <!-- Tambahkan postingan lain di sini -->
+  </div>
 
 </body>
 </html>
