@@ -27,13 +27,47 @@
       border-bottom: 2px solid limegreen;
       z-index: 2000;
     }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px;
+      border-bottom: 2px solid limegreen;
+      background-color: #000;
+      position: sticky;
+      top: 58px; /* di bawah site-header */
+      z-index: 1500;
+    }
+
+    nav a {
+      font-family: 'Coming Soon', cursive;
+      color: #ccc;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: limegreen;
+      text-decoration: underline;
+    }
+    
     .content {
-      margin-top: 80px;
+      margin-top: 130px; /* untuk menghindari header & navbar */
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
     }
+
+    .content h1 {
+      color: #39ff14;
+      font-family: 'Permanent Marker', cursive;
+      text-align: center;
+    }
+    
     footer {
       position: fixed;
       bottom: 0;
@@ -65,13 +99,15 @@
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </nav>
 
-  <!-- ✅ Judul Halaman --> 
-  <div class="site-header">Tentang Situs</div>
+ <!-- ✅ Konten -->
   <div class="content">
+    <h1>Tentang Situs</h1>
     <p>Situs ini bertujuan membantu masyarakat di wilayah Jawa dan Bali menemukan lowongan kerja dengan lebih mudah, cepat, dan informatif.</p>
 
     <p>Konten difokuskan pada lowongan yang aktif dan relevan, serta diusahakan agar muncul di Google Jobs melalui format yang sesuai.</p>
   </div>
+
+  <!-- ✅ Footer -->
   <footer>
     <div class="footer-links">
       <a href="privacy-policy.html">Privasi</a>
