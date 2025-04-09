@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Info Lowongan Kerja Jawa-Bali</title>
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -59,7 +60,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      padding: 100px 30px 30px; /* top padding besar karena ada header & navbar */
+      padding: 100px 30px 120px; /* ⬅️ tambahkan bottom padding lebih besar */
       max-width: 1200px;
       margin: auto;
     }
@@ -94,6 +95,30 @@
     a.card-link {
       text-decoration: none;
     }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #1a1a1a;
+      border-top: 2px solid limegreen;
+      padding: 10px 0;
+      text-align: center;
+      z-index: 100;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin: 0 15px;
+      font-family: 'Coming Soon', cursive;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: limegreen;
+    }
+    
   </style>
 </head>
 <body>
@@ -125,8 +150,15 @@
         <div class="card-title">Multimedia Nusantara School (MNS) - Gading Serpong</div>
       </div>
     </a>
-
   </div>
-
+  
+<!-- ✅ Footer -->
+<footer>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privasi</a>
+    <a href="note.html">Note</a>
+    <a href="about.html">About</a>
+  </div>
+</footer>
 </body>
 </html>
