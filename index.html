@@ -12,12 +12,31 @@
       padding: 0;
     }
 
+    /* ✅ Header (judul utama) */
+    .site-header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 22px;
+      font-weight: bold;
+      z-index: 2000;
+      border-bottom: 2px solid limegreen;
+    }
+
+    /* ✅ Navbar */
     nav {
+      position: sticky;
+      top: 50px; /* karena ada header di atas */
+      z-index: 1500;
+      background: #1a1a1a;
       display: flex;
       justify-content: center;
       gap: 30px;
       padding: 15px;
-      background: #1a1a1a;
       border-bottom: 2px solid limegreen;
     }
 
@@ -35,7 +54,7 @@
 
     h1 {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 120px; /* beri jarak agar tidak tertutup header & nav */
       color: white;
     }
 
@@ -49,46 +68,41 @@
     }
 
     .card {
-      background-color: white;
+      background-color: #1a1a1a;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       transition: transform 0.2s;
+      cursor: pointer;
     }
 
     .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
+      transform: scale(1.03);
     }
 
     .card img {
       width: 100%;
       height: auto;
       display: block;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover img {
-      transform: scale(1.05); /* Zoom in */
-    }
-
-    .card-content {
-      padding: 15px;
+      transition: 0.3s ease;
     }
 
     .card-title {
+      padding: 15px;
       font-size: 18px;
       font-weight: bold;
-      margin-bottom: 10px;
+      color: white;
+      text-align: center;
+    }
+
+    a.card-link {
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- ✅ Header Judul -->
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
   <!-- ✅ Navbar -->
   <nav>
@@ -96,29 +110,27 @@
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </nav>
 
-  <h1>Lowongan Kerja Jawa-Bali</h1>
+  <!-- ✅ Judul Section -->
+  <h1>Info Terbaru</h1>
 
+  <!-- ✅ Grid Lowongan -->
   <div class="grid-container">
 
     <!-- 🔗 Loker 1 -->
-    <div class="card">
-      <a href="loker-sales-dm.html">
+    <a href="loker-sales-dm.html" class="card-link">
+      <div class="card">
         <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
-        <div class="card-content">
-          <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
-        </div>
-      </a>
-    </div>
+        <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
+      </div>
+    </a>
 
     <!-- 🔗 Loker 2 -->
-    <div class="card">
-      <a href="loker-multimedia-nusantara.html">
+    <a href="loker-multimedia-nusantara.html" class="card-link">
+      <div class="card">
         <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
-        <div class="card-content">
-          <div class="card-title">Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</div>
-        </div>
-      </a>
-    </div>
+        <div class="card-title">Multimedia Nusantara School (MNS) - Gading Serpong</div>
+      </div>
+    </a>
 
   </div>
 
