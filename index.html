@@ -3,82 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inlok Jabli – Lowongan Kerja</title>
-  <meta name="description" content="Kumpulan info lowongan kerja terpercaya">
+  <title>Info Lowongan Kerja Jawa-Bali</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
       margin: 0;
-      padding: 20px;
-      font-family: sans-serif;
-      background: #111;
-      color: #fff;
+      padding: 0;
     }
+    /* 🔼 Navbar */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px;
+      background: #1a1a1a;
+      border-bottom: 2px solid limegreen;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: limegreen;
+      text-decoration: underline;
+    }   
 
     h1 {
       text-align: center;
-      margin-bottom: 40px;
-      color: limegreen;
+      margin-top: 30px;
+      color: #333;
     }
 
-    .grid {
+    .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .card {
-      background-color: #222;
-      border-radius: 12px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      text-decoration: none;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
+      transition: transform 0.2s;
     }
 
     .card:hover {
-      transform: scale(1.03);
+      transform: translateY(-5px);
     }
 
     .card img {
       width: 100%;
-      height: 250px;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
 
-    .caption {
-      padding: 10px;
-      text-align: center;
+    .card-content {
+      padding: 15px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: white;
+      background-color: limegreen;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
       font-weight: bold;
     }
 
-    @media (max-width: 600px) {
-      .card img {
-        height: 180px;
-      }
+    .card-link:hover {
+      background-color: green;
     }
   </style>
 </head>
 <body>
-  <h1>Lowongan Kerja Jawa dan Bali</h1>
 
-  <div class="grid">
+  <!-- ✅ Navbar -->
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </nav>
 
-    <!-- Loker 1 -->
-    <a class="card" href="loker-sales-dm.html">
-      <img src="gambar/flyer_baru_AMI.jpg" alt="Sales & Digital Marketing - PT AMI">
-      <div class="caption">Digital Marketing & Sales Property- PT AMI</div>
-    </a>
+  <h1>Lowongan Kerja Jawa-Bali</h1>
 
-    <!-- Loker 2 -->
-    <a class="card" href="loker-multimedia-nusantara.html">
-      <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong">
-      <div class="caption">Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</div>
-    </a>
+  <div class="grid-container">
+
+    <!-- 🔗 Loker 1 -->
+    <div class="card">
+      <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
+      <div class="card-content">
+        <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
+        <a class="card-link" href="loker-sales-dm.html">Lihat Detail</a>
+      </div>
+    </div>
+
+    <!-- 🔗 Loker 2 -->
+    <div class="card">
+      <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
+      <div class="card-content">
+        <div class="card-title">Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong</div>
+        <a class="card-link" href="loker-multimedia-nusantara.html">Lihat Detail</a>
+      </div>
+    </div>
+  </div>
 
     <!-- Tambahkan postingan lain di sini -->
 
-  </div>
 </body>
 </html>
