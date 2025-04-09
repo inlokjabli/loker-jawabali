@@ -30,7 +30,7 @@
     /* ✅ Navbar */
     nav {
       position: sticky;
-      top: 50px; /* karena ada header di atas */
+      top: 50px;
       z-index: 1500;
       background: #1a1a1a;
       display: flex;
@@ -52,17 +52,11 @@
       text-decoration: underline;
     }
 
-    h1 {
-      text-align: center;
-      margin-top: 120px; /* beri jarak agar tidak tertutup header & nav */
-      color: white;
-    }
-
     .grid-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      padding: 30px;
+      padding: 100px 30px 30px; /* top padding besar karena ada header & navbar */
       max-width: 1200px;
       margin: auto;
     }
