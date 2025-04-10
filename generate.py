@@ -20,26 +20,37 @@ def baca_template():
 
 def konversi_md_ke_html(markdown):
     lines = markdown.splitlines()
-    title, date, image = "", "", ""
+    title = ""
+    date = ""
+    image = ""
+    apply_url = ""
     content_lines = []
-    in_metadata = False
+    in_metadata = True
 
     for line in lines:
-        if line.strip() == "---":
-            in_metadata = not in_metadata
-            continue
         if in_metadata:
-            if line.startswith("title:"):
+            if line.strip() == "---":
+                continue
+            elif line.startswith("title:"):
                 title = line.split(":", 1)[1].strip().strip('"')
             elif line.startswith("date:"):
                 date = line.split(":", 1)[1].strip()
             elif line.startswith("image:"):
                 image = line.split(":", 1)[1].strip().strip('"')
+            elif line.startswith("apply_url:"):
+                apply_url = line.split(":", 1)[1].strip().strip('"')
+            elif line.strip() == "":
+                in_metadata = False
         else:
             content_lines.append(line)
 
-    content = "\n".join(content_lines).strip().replace("\n", "<br>")
-    return title, date, image, content
+    content_html = "\n".join(content_lines).strip().replace("\n", "<br>")
+    
+    # Tambahkan tombol jika ada apply_url
+    if apply_url:
+        content_html += f'<br><br><a href="{apply_url}" class="apply-button" target="_blank">Lamar Sekarang</a>'
+
+    return title, date, image, content_html
 
 def buat_html(judul, tanggal, gambar, isi, template):
     html = template.replace("{{ title }}", judul)
@@ -56,11 +67,11 @@ def tambah_ke_index(nama_file, judul, gambar):
     with open(INDEX_FILE, "r", encoding="utf-8") as f:
         index_html = f.read()
 
-    if nama_file in index_html:
-        print(f"⏩ Sudah ada di index.html: {nama_file}")
+    kartu = CARD_TEMPLATE.format(filename=nama_file, title=judul, image=gambar)
+    if kartu in index_html:
+        print(f"⚠️ Sudah ada: {nama_file} di index.html")
         return
 
-    kartu = CARD_TEMPLATE.format(filename=nama_file, title=judul, image=gambar)
     index_html = index_html.replace("<!-- GENERATED_CARDS -->", kartu + "\n  <!-- GENERATED_CARDS -->")
 
     with open(INDEX_FILE, "w", encoding="utf-8") as f:
