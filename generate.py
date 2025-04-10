@@ -1,86 +1,103 @@
 import os
 import markdown
+import re
 from datetime import datetime
 
-# Fungsi untuk membaca komponen HTML terpisah
-def load_partial(filename):
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        return ""
+# Lokasi folder
+folder_lowongan = "lowongan"
+folder_output = "."
+template_index = "template_index.html"
+file_index_output = "index.html"
 
-# Fungsi untuk mengubah markdown ke HTML
-def konversi_markdown(file_md):
-    with open(file_md, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+# Fungsi bantu: ambil metadata dari markdown
+def extract_metadata(content):
+    meta = {}
+    match = re.search(r"---(.*?)---", content, re.DOTALL)
+    if match:
+        lines = match.group(1).strip().split("\n")
+        for line in lines:
+            if ":" in line:
+                key, value = line.split(":", 1)
+                meta[key.strip()] = value.strip().strip('"').strip("'")
+    return meta
 
-    judul = lines[0].strip().replace("#", "").strip()
-    tanggal = lines[1].strip().replace("_", "").strip()
-    gambar = lines[2].strip()
-    apply_url = ""
-    isi_markdown = ""
+# Load template index.html (asli dengan <!-- GENERATED_CARDS -->)
+with open(template_index, "r", encoding="utf-8") as f:
+    index_template = f.read()
 
-    for line in lines[3:]:
-        if line.startswith("LAMAR:"):
-            apply_url = line.replace("LAMAR:", "").strip()
-        else:
-            isi_markdown += line
+cards_html = ""
 
-    html_content = markdown.markdown(isi_markdown, extensions=["extra"])
-    return judul, tanggal, gambar, apply_url, html_content
+# Proses semua file .md
+for filename in os.listdir(folder_lowongan):
+    if filename.endswith(".md"):
+        path_md = os.path.join(folder_lowongan, filename)
+        with open(path_md, "r", encoding="utf-8") as f:
+            content = f.read()
 
-# Fungsi untuk menyusun HTML final dari template
-def buat_html(judul, tanggal, gambar, apply_url, isi, template):
-    header = load_partial("header.html")
-    navbar = load_partial("navbar.html")
-    footer = load_partial("footer.html")
+        metadata = extract_metadata(content)
+        html_body = markdown.markdown(content)
 
-    html = template.replace("{{ title }}", judul)
-    html = html.replace("{{ date }}", tanggal)
-    html = html.replace("{{ image }}", gambar)
-    html = html.replace("{{ content }}", isi)
-    html = html.replace("{{ header }}", header)
-    html = html.replace("{{ navbar }}", navbar)
-    html = html.replace("{{ footer }}", footer)
+        slug = os.path.splitext(filename)[0]
+        output_filename = f"{slug}.html"
+        image = metadata.get("image", "")
+        title = metadata.get("title", "Lowongan")
+        apply_url = metadata.get("apply_url", "#")
 
-    if apply_url:
-        tombol = f'''
-        <div style="text-align: center; margin-top: 30px;">
-          <a href="{apply_url}" target="_blank" style="background-color: limegreen; color: black; padding: 12px 25px; border-radius: 6px; font-weight: bold; text-decoration: none;">Lamar Sekarang</a>
-        </div>
-        '''
-    else:
-        tombol = ""
+        # Buat halaman lowongan HTML
+        html_output = f"""<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{title}</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </nav>
 
-    html = html.replace("{{ apply_button }}", tombol)
-    return html
+  <main>
+    <h1>{title}</h1>
+    {"<img src='gambar/" + image + "' alt='" + title + "'>" if image else ""}
+    <div class="markdown-content">
+      {html_body}
+    </div>
+    {"<div class='apply-button'><a href='" + apply_url + "' target='_blank'>Lamar Sekarang</a></div>" if apply_url else ""}
+  </main>
 
-# Main: proses semua file di folder /lowongan
-def proses_semua():
-    folder = "lowongan"
-    template_file = "template.html"
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+</body>
+</html>
+"""
+        with open(os.path.join(folder_output, output_filename), "w", encoding="utf-8") as f:
+            f.write(html_output)
 
-    if not os.path.exists(template_file):
-        print("File template.html tidak ditemukan.")
-        return
+        # Tambahkan ke index.html bagian card
+        card_html = f"""
+    <div class="card">
+      <a href="{output_filename}">
+        {"<img src='gambar/" + image + "' alt='" + title + "'>" if image else ""}
+        <h3>{title}</h3>
+      </a>
+    </div>
+"""
+        cards_html += card_html
 
-    with open(template_file, "r", encoding="utf-8") as f:
-        template = f.read()
+# Sisipkan semua cards ke template index
+index_final = index_template.replace("<!-- GENERATED_CARDS -->", cards_html)
 
-    for filename in os.listdir(folder):
-        if filename.endswith(".md"):
-            path_md = os.path.join(folder, filename)
-            judul, tanggal, gambar, apply_url, isi = konversi_markdown(path_md)
+# Simpan sebagai index.html
+with open(file_index_output, "w", encoding="utf-8") as f:
+    f.write(index_final)
 
-            nama_html = filename.replace(".md", ".html")
-            path_html = os.path.join(".", nama_html)
-
-            html = buat_html(judul, tanggal, gambar, apply_url, isi, template)
-
-            with open(path_html, "w", encoding="utf-8") as out:
-                out.write(html)
-            print(f"✅ Dibuat: {nama_html}")
-
-if __name__ == "__main__":
-    proses_semua()
+print("✅ Semua file HTML berhasil dibuat!")
