@@ -2,7 +2,7 @@
 title: "Lowongan Digital Marketing & Sales-PT.AMI"
 date: 2025-04-12
 image: "gambar/flyer_baru_AMI.jpg"
-apply_url: "https://ippconsulting.co.id/rekrutmen-sales-dm/?text=LAMAR%SEKARANG"
+apply_url: "https://ippconsulting.co.id/rekrutmen-sales-dm"
 ---
 
 Digital Marketing (Penempatan: Semarang)
