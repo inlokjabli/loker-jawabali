@@ -21,4 +21,3 @@ Sales Properti (Penempatan Semarang)
 * Memiliki jaringan luas dan aktif di media sosial
 
 Segera lamar sekarang melalui link berikut:
-**Lamar Sekarang**
