@@ -1,0 +1,136 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+/* ✅ Header (judul utama) */
+.site-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #000;
+  color: #39ff14;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 26px;
+  font-weight: bold;
+  font-family: 'Permanent Marker', cursive;
+  z-index: 2000;
+  border-bottom: 2px solid limegreen;
+}
+
+/* ✅ Navbar */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px;
+  border-bottom: 2px solid limegreen;
+  position: sticky;
+  top: 58px;
+  z-index: 1500;
+  background-color: #000;
+}
+
+nav a {
+  font-family: 'Coming Soon', cursive;
+  color: #ccc;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  font-size: 18px;
+}
+
+nav a:hover {
+  color: limegreen;
+  text-decoration: underline;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 100px 30px 60px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: 0.3s ease;
+}
+
+.card-title {
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+a.card-link {
+  text-decoration: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #1a1a1a;
+  border-top: 2px solid limegreen;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 100;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 15px;
+  font-family: 'Coming Soon', cursive;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: limegreen;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  nav a, .footer-links a {
+    font-size: 16px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .grid-container {
+    padding: 120px 10px 80px;
+  }
+
+  footer {
+    font-size: 14px;
+  }
+}
