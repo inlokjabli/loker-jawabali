@@ -1,10 +1,10 @@
 ---
 title: "Contoh Lowongan"
 date: 2025-04-10
-image: "gambar/contoh.jpg"
+image: "contoh.jpg"
 ---
 
-Ini adalah contoh postingan lowongan.
+## Ini adalah contoh postingan lowongan.
 
 * Lokasi: Bali  
 * Posisi: Marketing  

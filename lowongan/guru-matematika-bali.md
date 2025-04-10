@@ -1,7 +1,8 @@
 ---
 title: "Guru Matematika - SMA Citra Bali"
 date: 2025-04-11
-image: gambar/guru-matematika.jpg
+image: guru-matematika.jpg
+apply_url: "https://s.id/lamar-citra"
 ---
 
 SMA Citra Bali membuka lowongan sebagai **Guru Matematika** dengan kualifikasi:
@@ -11,4 +12,3 @@ SMA Citra Bali membuka lowongan sebagai **Guru Matematika** dengan kualifikasi:
 - Bersedia ditempatkan di Denpasar
 
 Silakan kirim lamaran melalui:
-[https://s.id/lamar-citra](https://s.id/lamar-citra)

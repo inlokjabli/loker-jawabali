@@ -1,7 +1,7 @@
 ---
 title: "Lowongan Digital Marketing & Sales-PT.AMI"
 date: 2025-04-12
-image: "gambar/flyer_baru_AMI.jpg"
+image: "flyer_baru_AMI.jpg"
 apply_url: "https://ippconsulting.co.id/rekrutmen-sales-dm"
 ---
 
