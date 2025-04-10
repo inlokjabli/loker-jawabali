@@ -9,20 +9,25 @@ def baca_template():
         return f.read()
 
 def konversi_md_ke_html(markdown):
-    # Ambil metadata dan isi
     baris = markdown.splitlines()
     judul = ""
     tanggal = ""
+    gambar = ""
     isi_md = []
-    parsing_isi = False
+    
+    parsing_meta = False
 
     for baris_md in baris:
-        if baris_md.startswith("title:"):
-            judul = baris_md.replace("title:", "").strip().strip('"')
-        elif baris_md.startswith("date:"):
-            tanggal = baris_md.replace("date:", "").strip()
-        elif baris_md.strip() == "---":
+        if baris_md.strip() == "---":
+            parsing_meta = not parsing_meta
             continue
+        if parsing_meta:
+            if baris_md.startswith("title:"):
+                judul = baris_md.replace("title:", "").strip().strip('"')
+            elif baris_md.startswith("date:"):
+                tanggal = baris_md.replace("date:", "").strip()
+            elif baris_md.startswith("image:"):
+                gambar = baris_md.replace("image:", "").strip().strip('"')
         else:
             isi_md.append(baris_md)
 
@@ -33,12 +38,19 @@ def konversi_md_ke_html(markdown):
                        .replace("**", "<b>").replace("__", "<b>") \
                        .replace("*", "<i>").replace("_", "<i>")
 
-    return judul, tanggal, isi_html
+    return judul, tanggal, gambar, isi_html
 
-def buat_html(judul, tanggal, isi, template):
-    html = template.replace("{{title}}", judul)
-    html = html.replace("{{content}}", isi)
-    return html
+def buat_html(judul, tanggal, gambar, isi, template):
+    konten_html = ""
+
+    if gambar:
+        konten_html += f'<img src="{gambar}" alt="{judul}" style="max-width:100%; border-radius:12px;"><br><br>'
+
+    konten_html += isi
+
+    html_akhir = template.replace("{{title}}", judul)
+    html_akhir = html_akhir.replace("{{content}}", konten_html)
+    return html_akhir
 
 def proses_file():
     template = baca_template()
@@ -48,8 +60,8 @@ def proses_file():
             with open(path_file, "r", encoding="utf-8") as f:
                 markdown = f.read()
 
-            judul, tanggal, isi = konversi_md_ke_html(markdown)
-            html = buat_html(judul, tanggal, isi, template)
+            judul, tanggal, gambar, isi = konversi_md_ke_html(markdown)
+            html = buat_html(judul, tanggal, gambar, isi, template)
 
             nama_output = nama_file.replace(".md", ".html").replace(" ", "-").lower()
             path_output = os.path.join(OUTPUT_FOLDER, nama_output)
