@@ -65,6 +65,7 @@ nav a:hover {
   overflow: hidden;
   transition: transform 0.2s;
   cursor: pointer;
+  box-shadow: 0 0 10px #111;
 }
 
 .card:hover {
@@ -82,9 +83,9 @@ nav a:hover {
   padding: 15px;
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: #39ff14;
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: 'Permanent Marker', cursive;
 }
 
 a.card-link {
@@ -173,7 +174,7 @@ footer {
 .markdown-content h3,
 .markdown-content h4 {
   font-family: "Permanent Marker", cursive;
-  color: limegreen;
+  color: #00ff88;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
 }
@@ -234,4 +235,10 @@ footer {
   height: auto;
   margin: 0 auto 2rem auto;
   border-radius: 10px;
+}
+
+/* ✅ Subjudul di halaman lowongan */
+.markdown-content h2,
+.markdown-content h3 {
+  color: #39ff14;
 }
