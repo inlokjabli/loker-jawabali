@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 LOWONGAN_FOLDER = "lowongan"
 OUTPUT_FOLDER = "."
@@ -10,23 +9,36 @@ def baca_template():
         return f.read()
 
 def konversi_md_ke_html(markdown):
+    # Ambil metadata dan isi
     baris = markdown.splitlines()
-    judul = baris[0].replace("# ", "")
-    tanggal = baris[1].strip()
-    isi_md = "\n".join(baris[2:]).strip()
+    judul = ""
+    tanggal = ""
+    isi_md = []
+    parsing_isi = False
 
-    # Konversi markdown sederhana ke HTML
-    isi_html = isi_md.replace("\n", "<br>") \
-                     .replace("**", "<b>").replace("__", "<b>") \
-                     .replace("*", "<i>").replace("_", "<i>")
+    for baris_md in baris:
+        if baris_md.startswith("title:"):
+            judul = baris_md.replace("title:", "").strip().strip('"')
+        elif baris_md.startswith("date:"):
+            tanggal = baris_md.replace("date:", "").strip()
+        elif baris_md.strip() == "---":
+            continue
+        else:
+            isi_md.append(baris_md)
+
+    isi_text = "\n".join(isi_md).strip()
+
+    # Konversi markdown dasar ke HTML
+    isi_html = isi_text.replace("\n", "<br>") \
+                       .replace("**", "<b>").replace("__", "<b>") \
+                       .replace("*", "<i>").replace("_", "<i>")
 
     return judul, tanggal, isi_html
 
 def buat_html(judul, tanggal, isi, template):
-    konten = template.replace("{{ title }}", judul)
-    konten = konten.replace("{{ date }}", tanggal)
-    konten = konten.replace("{{ body }}", isi)
-    return konten
+    html = template.replace("{{title}}", judul)
+    html = html.replace("{{content}}", isi)
+    return html
 
 def proses_file():
     template = baca_template()

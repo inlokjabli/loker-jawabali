@@ -1,9 +1,13 @@
 ---
 title: "Contoh Lowongan"
 date: 2025-04-10
-image: gambar/flyer_baru_AMI.jpg
 ---
 
-Kami sedang membuka lowongan untuk posisi Digital Marketing & Sales di PT. AMI, wilayah Jawa-Bali. 
+Ini adalah contoh postingan lowongan.
 
-[Lamar Sekarang](https://example.com)
+* Lokasi: Bali  
+* Posisi: Marketing  
+* Gaji: Kompetitif  
+* Deadline: 30 April 2025
+
+Silakan kirim CV ke: email@contoh.com
