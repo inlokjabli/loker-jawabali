@@ -1,7 +1,7 @@
 ---
 title: "Contoh Lowongan"
 date: 2025-04-10
-image: "gambar/flyer_baru_AMI.jpg"
+image: "gambar/contoh.jpg"
 ---
 
 Ini adalah contoh postingan lowongan.

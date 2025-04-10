@@ -1,4 +1,5 @@
 import os
+import re
 
 LOWONGAN_FOLDER = "lowongan"
 OUTPUT_FOLDER = "."
@@ -8,49 +9,31 @@ def baca_template():
     with open(TEMPLATE_FILE, "r", encoding="utf-8") as f:
         return f.read()
 
-def konversi_md_ke_html(markdown):
-    baris = markdown.splitlines()
-    judul = ""
-    tanggal = ""
-    gambar = ""
-    isi_md = []
-    
-    parsing_meta = False
+def parse_front_matter(md_text):
+    front_matter = {}
+    content = md_text
+    if md_text.startswith('---'):
+        parts = md_text.split('---', 2)
+        if len(parts) >= 3:
+            _, meta, content = parts
+            lines = meta.strip().splitlines()
+            for line in lines:
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    front_matter[key.strip()] = value.strip().strip('"')
+    return front_matter, content.strip()
 
-    for baris_md in baris:
-        if baris_md.strip() == "---":
-            parsing_meta = not parsing_meta
-            continue
-        if parsing_meta:
-            if baris_md.startswith("title:"):
-                judul = baris_md.replace("title:", "").strip().strip('"')
-            elif baris_md.startswith("date:"):
-                tanggal = baris_md.replace("date:", "").strip()
-            elif baris_md.startswith("image:"):
-                gambar = baris_md.replace("image:", "").strip().strip('"')
-        else:
-            isi_md.append(baris_md)
+def konversi_md_ke_html(md_text):
+    # Ganti markdown sederhana jadi HTML
+    html = md_text.replace("\n", "<br>")
+    html = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', html)
+    html = re.sub(r'\*(.*?)\*', r'<i>\1</i>', html)
+    return html
 
-    isi_text = "\n".join(isi_md).strip()
-
-    # Konversi markdown dasar ke HTML
-    isi_html = isi_text.replace("\n", "<br>") \
-                       .replace("**", "<b>").replace("__", "<b>") \
-                       .replace("*", "<i>").replace("_", "<i>")
-
-    return judul, tanggal, gambar, isi_html
-
-def buat_html(judul, tanggal, gambar, isi, template):
-    konten_html = ""
-
-    if gambar:
-        konten_html += f'<img src="{gambar}" alt="{judul}" style="max-width:100%; border-radius:12px;"><br><br>'
-
-    konten_html += isi
-
-    html_akhir = template.replace("{{title}}", judul)
-    html_akhir = html_akhir.replace("{{content}}", konten_html)
-    return html_akhir
+def buat_html(template, title, image, content_html):
+    return template.replace("{{ title }}", title)\
+                   .replace("{{ image }}", image)\
+                   .replace("{{ content }}", content_html)
 
 def proses_file():
     template = baca_template()
@@ -58,15 +41,20 @@ def proses_file():
         if nama_file.endswith(".md"):
             path_file = os.path.join(LOWONGAN_FOLDER, nama_file)
             with open(path_file, "r", encoding="utf-8") as f:
-                markdown = f.read()
+                md = f.read()
 
-            judul, tanggal, gambar, isi = konversi_md_ke_html(markdown)
-            html = buat_html(judul, tanggal, gambar, isi, template)
+            meta, isi = parse_front_matter(md)
+            title = meta.get("title", "Tanpa Judul")
+            image = meta.get("image", "gambar/default.jpg")
+            isi_html = konversi_md_ke_html(isi)
+
+            html = buat_html(template, title, image, isi_html)
 
             nama_output = nama_file.replace(".md", ".html").replace(" ", "-").lower()
             path_output = os.path.join(OUTPUT_FOLDER, nama_output)
             with open(path_output, "w", encoding="utf-8") as f:
                 f.write(html)
+
             print(f"✅ Dibuat: {nama_output}")
 
 if __name__ == "__main__":
