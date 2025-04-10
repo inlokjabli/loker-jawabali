@@ -1,61 +1,48 @@
 import os
-import re
+import markdown
 from datetime import datetime
 
-LOWONGAN_FOLDER = "lowongan"
-TEMPLATE_FILE = "template.html"
-INDEX_FILE = "index.html"
+# Fungsi untuk membaca komponen HTML terpisah
+def load_partial(filename):
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
 
-CARD_TEMPLATE = '''  <a href="{filename}" class="card-link">
-    <div class="card">
-      <img src="gambar/{image}" alt="{title}" />
-      <div class="card-title">{title}</div>
-    </div>
-  </a>
-'''
+# Fungsi untuk mengubah markdown ke HTML
+def konversi_markdown(file_md):
+    with open(file_md, "r", encoding="utf-8") as f:
+        lines = f.readlines()
 
-def baca_template():
-    with open(TEMPLATE_FILE, "r", encoding="utf-8") as f:
-        return f.read()
-
-def konversi_md_ke_html(markdown):
-    lines = markdown.splitlines()
-    title = ""
-    date = ""
-    image = ""
+    judul = lines[0].strip().replace("#", "").strip()
+    tanggal = lines[1].strip().replace("_", "").strip()
+    gambar = lines[2].strip()
     apply_url = ""
-    content_lines = []
-    in_metadata = True
+    isi_markdown = ""
 
-    for line in lines:
-        if in_metadata:
-            if line.strip() == "---":
-                continue
-            elif line.startswith("title:"):
-                title = line.split(":", 1)[1].strip().strip('"')
-            elif line.startswith("date:"):
-                date = line.split(":", 1)[1].strip()
-            elif line.startswith("image:"):
-                image = line.split(":", 1)[1].strip().strip('"')
-            elif line.startswith("apply_url:"):
-                apply_url = line.split(":", 1)[1].strip().strip('"')
-            elif line.strip() == "":
-                in_metadata = False
+    for line in lines[3:]:
+        if line.startswith("LAMAR:"):
+            apply_url = line.replace("LAMAR:", "").strip()
         else:
-            content_lines.append(line)
+            isi_markdown += line
 
-    content_md = "\n".join(content_lines).strip()
-    # Konversi markdown sederhana
-    content_html = re.sub(r"^## ?(.*)", r"<h2 style='color:limegreen;'>\1</h2>", content_md, flags=re.MULTILINE)
-    content_html = content_html.replace("\n", "<br>")
+    html_content = markdown.markdown(isi_markdown, extensions=["extra"])
+    return judul, tanggal, gambar, apply_url, html_content
 
-    return title, date, image, apply_url, content_html
-
+# Fungsi untuk menyusun HTML final dari template
 def buat_html(judul, tanggal, gambar, apply_url, isi, template):
+    header = load_partial("header.html")
+    navbar = load_partial("navbar.html")
+    footer = load_partial("footer.html")
+
     html = template.replace("{{ title }}", judul)
     html = html.replace("{{ date }}", tanggal)
     html = html.replace("{{ image }}", gambar)
     html = html.replace("{{ content }}", isi)
+    html = html.replace("{{ header }}", header)
+    html = html.replace("{{ navbar }}", navbar)
+    html = html.replace("{{ footer }}", footer)
 
     if apply_url:
         tombol = f'''
@@ -69,50 +56,31 @@ def buat_html(judul, tanggal, gambar, apply_url, isi, template):
     html = html.replace("{{ apply_button }}", tombol)
     return html
 
-def proses_file():
-    template = baca_template()
-    postingan = []
+# Main: proses semua file di folder /lowongan
+def proses_semua():
+    folder = "lowongan"
+    template_file = "template.html"
 
-    for nama_file in os.listdir(LOWONGAN_FOLDER):
-        if nama_file.endswith(".md"):
-            path_file = os.path.join(LOWONGAN_FOLDER, nama_file)
-            with open(path_file, "r", encoding="utf-8") as f:
-                markdown = f.read()
-
-            judul, tanggal_str, gambar, apply_url, isi = konversi_md_ke_html(markdown)
-            try:
-                tanggal_obj = datetime.strptime(tanggal_str, "%Y-%m-%d")
-            except ValueError:
-                tanggal_obj = datetime.min
-
-            nama_html = nama_file.replace(".md", ".html").lower()
-            html = buat_html(judul, tanggal_str, gambar, apply_url, isi, template)
-
-            # Simpan HTML
-            with open(nama_html, "w", encoding="utf-8") as f:
-                f.write(html)
-            print(f"✅ Dibuat: {nama_html}")
-
-            postingan.append((tanggal_obj, nama_html, judul, gambar))
-
-    # Urutkan berdasarkan tanggal, terbaru di atas
-    postingan.sort(reverse=True)
-
-    # Bangun ulang index.html
-    if os.path.exists(INDEX_FILE):
-        with open(INDEX_FILE, "r", encoding="utf-8") as f:
-            index_html = f.read()
-        index_html = re.sub(r'(?s)<!-- GENERATED_CARDS -->.*?<!-- END_GENERATED_CARDS -->', '<!-- GENERATED_CARDS -->\n  <!-- END_GENERATED_CARDS -->', index_html)
-    else:
-        print("❌ index.html tidak ditemukan.")
+    if not os.path.exists(template_file):
+        print("File template.html tidak ditemukan.")
         return
 
-    kartu_html = "\n".join([CARD_TEMPLATE.format(filename=f, title=t, image=g) for _, f, t, g in postingan])
-    index_html = index_html.replace("<!-- GENERATED_CARDS -->\n  <!-- END_GENERATED_CARDS -->", f"<!-- GENERATED_CARDS -->\n{kartu_html}\n  <!-- END_GENERATED_CARDS -->")
+    with open(template_file, "r", encoding="utf-8") as f:
+        template = f.read()
 
-    with open(INDEX_FILE, "w", encoding="utf-8") as f:
-        f.write(index_html)
-    print("📄 index.html diperbarui!")
+    for filename in os.listdir(folder):
+        if filename.endswith(".md"):
+            path_md = os.path.join(folder, filename)
+            judul, tanggal, gambar, apply_url, isi = konversi_markdown(path_md)
+
+            nama_html = filename.replace(".md", ".html")
+            path_html = os.path.join(".", nama_html)
+
+            html = buat_html(judul, tanggal, gambar, apply_url, isi, template)
+
+            with open(path_html, "w", encoding="utf-8") as out:
+                out.write(html)
+            print(f"✅ Dibuat: {nama_html}")
 
 if __name__ == "__main__":
-    proses_file()
+    proses_semua()
