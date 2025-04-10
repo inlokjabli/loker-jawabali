@@ -7,174 +7,52 @@
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* ✅ Header (judul utama) */
-    .site-header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: #000;
-      color: #39ff14;
-      text-align: center;
-      padding: 12px 0;
-      font-size: 26px;
-      font-weight: bold;
-      font-family: 'Permanent Marker', cursive;
-      z-index: 2000;
-      border-bottom: 2px solid limegreen;
-    }
-
-    /* ✅ Navbar */
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 15px;
-      border-bottom: 2px solid limegreen;
-      position: sticky;
-      top: 58px;
-      z-index: 1500;
-      background-color: #000;
-    }
-
-    nav a {
-      font-family: 'Coming Soon', cursive;
-      color: #ccc;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-      font-size: 18px;
-    }
-
-    nav a:hover {
-      color: limegreen;
-      text-decoration: underline;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 100px 30px 60px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .card {
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-    }
-
-    .card img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: 0.3s ease;
-    }
-
-    .card-title {
-      padding: 15px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      text-align: center;
-    }
-
-    a.card-link {
-      text-decoration: none;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #1a1a1a;
-      border-top: 2px solid limegreen;
-      padding: 10px 0;
-      text-align: center;
-      z-index: 100;
-    }
-
-    .footer-links a {
-      color: #ccc;
-      text-decoration: none;
-      margin: 0 15px;
-      font-family: 'Coming Soon', cursive;
-      transition: color 0.3s;
-    }
-
-    .footer-links a:hover {
-      color: limegreen;
-    }
-
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      nav a, .footer-links a {
-        font-size: 16px;
-      }
-
-      .card-title {
-        font-size: 16px;
-        padding: 10px;
-      }
-
-      .grid-container {
-        padding: 120px 10px 80px;
-      }
-
-      footer {
-        font-size: 14px;
-      }
-    }
+    body { font-family: 'Coming Soon', cursive; background-color: #121212; color: #fff; }
+    .site-header { font-family: 'Permanent Marker', cursive; font-size: 2em; text-align: center; margin: 20px 0; }
+    nav a { color: #fff; margin: 0 10px; text-decoration: none; }
+    .main-container { display: flex; padding: 20px; }
+    .sidebar { width: 20%; }
+    .content-area { width: 80%; display: flex; justify-content: center; }
+    .grid-container { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+    .card { background-color: #1e1e1e; padding: 10px; border-radius: 8px; text-align: center; }
+    .card img { max-width: 100%; height: auto; }
+    .card-title { margin-top: 10px; font-size: 1.1em; }
+    footer { text-align: center; margin-top: 20px; padding: 10px; background-color: #1e1e1e; }
+    footer a { color: #ccc; margin: 0 10px; }
   </style>
 </head>
 <body>
-  <!-- ✅ Header Judul -->
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
-
-  <!-- ✅ Navbar -->
   <nav>
     <a href="index.html">Beranda</a>
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </nav>
-
-  <!-- ✅ Grid Lowongan -->
-  <div class="grid-container">
-    <!-- 🔗 Loker 1 -->
-    <a href="loker-sales-dm.html" class="card-link">
-      <div class="card">
-        <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
-        <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
+  <div class="main-container">
+    <div class="sidebar">
+      <a href="https://php.id/ref/95040" target="_blank">
+        <img src="https://php.id/img/hosting-gratis/200x200.png" alt="Hosting Gratis">
+      </a>
+      <a href="https://php.id/ref/95040" target="_blank">
+        <img src="https://php.id/img/hosting-murah/200x200.png" alt="Hosting Murah">
+      </a>
+    </div>
+    <div class="content-area">
+      <div class="grid-container">
+        <a href="loker-sales-dm.html" class="card-link">
+          <div class="card">
+            <img src="gambar/flyer_baru_AMI.jpg" alt="Digital Marketing & Sales Property - PT AMI" />
+            <div class="card-title">Digital Marketing & Sales Property - PT. AMI</div>
+          </div>
+        </a>
+        <a href="loker-multimedia-nusantara.html" class="card-link">
+          <div class="card">
+            <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
+            <div class="card-title">Multimedia Nusantara School (MNS) - Gading Serpong</div>
+          </div>
+        </a>
       </div>
-    </a>
-
-    <!-- 🔗 Loker 2 -->
-    <a href="loker-multimedia-nusantara.html" class="card-link">
-      <div class="card">
-        <img src="gambar/MNS.jpg" alt="Lowongan Kerja Multimedia Nusantara School (MNS) Gading Serpong" />
-        <div class="card-title">Multimedia Nusantara School (MNS) - Gading Serpong</div>
-      </div>
-    </a>
+    </div>
   </div>
-
-  <!-- ✅ Footer -->
   <footer>
     <div class="footer-links">
       <a href="privacy-policy.html">Privasi</a>
