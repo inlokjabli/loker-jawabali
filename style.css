@@ -155,3 +155,57 @@ footer {
     font-size: 14px;
   }
 }
+
+/* Markdown content styling */
+.markdown-content {
+  font-family: "Coming Soon", cursive;
+  color: limegreen;
+  line-height: 1.6;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  font-family: "Permanent Marker", cursive;
+  color: #00ff88;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-content p {
+  margin: 1em 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 2em;
+  margin: 1em 0;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5em;
+}
+
+.markdown-content a {
+  color: #00ffff;
+  text-decoration: underline;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid limegreen;
+  padding-left: 1em;
+  color: #ccc;
+  font-style: italic;
+  margin: 1em 0;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+  border-radius: 10px;
+}
