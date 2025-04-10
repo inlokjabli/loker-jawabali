@@ -1,50 +1,53 @@
 import os
+import glob
 import markdown
-import re
 from datetime import datetime
 
-# Lokasi folder
-folder_lowongan = "lowongan"
-folder_output = "."
-template_index = "template_index.html"
-file_index_output = "index.html"
+# Konfigurasi folder markdown dan gambar
+markdown_folder = 'lowongan'
+image_folder = 'gambar'
 
-# Fungsi bantu: ambil metadata dari markdown
-def extract_metadata(content):
-    meta = {}
-    match = re.search(r"---(.*?)---", content, re.DOTALL)
-    if match:
-        lines = match.group(1).strip().split("\n")
-        for line in lines:
-            if ":" in line:
-                key, value = line.split(":", 1)
-                meta[key.strip()] = value.strip().strip('"').strip("'")
-    return meta
+# Ambil semua file markdown
+md_files = glob.glob(f'{markdown_folder}/*.md')
 
-# Load template index.html (asli dengan <!-- GENERATED_CARDS -->)
-with open(template_index, "r", encoding="utf-8") as f:
-    index_template = f.read()
+# List kartu untuk homepage
+cards_html = ''
 
-cards_html = ""
+for md_file in md_files:
+    with open(md_file, 'r', encoding='utf-8') as f:
+        content = f.read()
 
-# Proses semua file .md
-for filename in os.listdir(folder_lowongan):
-    if filename.endswith(".md"):
-        path_md = os.path.join(folder_lowongan, filename)
-        with open(path_md, "r", encoding="utf-8") as f:
-            content = f.read()
+    # Pisahkan metadata dan isi markdown
+    if content.startswith('---'):
+        parts = content.split('---')
+        if len(parts) >= 3:
+            metadata_raw = parts[1]
+            body_md = '---'.join(parts[2:])
+        else:
+            metadata_raw = ''
+            body_md = content
+    else:
+        metadata_raw = ''
+        body_md = content
 
-        metadata = extract_metadata(content)
-        html_body = markdown.markdown(content)
+    # Ambil metadata
+    metadata = {}
+    for line in metadata_raw.strip().split('\n'):
+        if ':' in line:
+            key, value = line.split(':', 1)
+            metadata[key.strip()] = value.strip().strip('"')
 
-        slug = os.path.splitext(filename)[0]
-        output_filename = f"{slug}.html"
-        image = metadata.get("image", "")
-        title = metadata.get("title", "Lowongan")
-        apply_url = metadata.get("apply_url", "#")
+    title = metadata.get('title', 'Judul Tidak Ditemukan')
+    image = metadata.get('image', '')
+    apply_url = metadata.get('apply_url', '')
+    date = metadata.get('date', '')
+    filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
-        # Buat halaman lowongan HTML
-        html_output = f"""<!DOCTYPE html>
+    # Konversi isi markdown ke HTML
+    body_html = markdown.markdown(body_md)
+
+    # Buat HTML halaman lowongan
+    lowongan_html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -55,18 +58,17 @@ for filename in os.listdir(folder_lowongan):
 </head>
 <body>
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
+
   <nav>
     <a href="index.html">Beranda</a>
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </nav>
 
-  <main>
-    <h1>{title}</h1>
-    {"<img src='gambar/" + image + "' alt='" + title + "'>" if image else ""}
-    <div class="markdown-content">
-      {html_body}
-    </div>
-    {"<div class='apply-button'><a href='" + apply_url + "' target='_blank'>Lamar Sekarang</a></div>" if apply_url else ""}
+  <main class="job-posting">
+    <h1 class="job-title">{title}</h1>
+    {f'<img src="gambar/{image}" alt="Flyer Lowongan" class="job-image">' if image else ''}
+    {body_html}
+    {f'<div class="apply-button"><a href="{apply_url}" target="_blank">Lamar Sekarang</a></div>' if apply_url else ''}
   </main>
 
   <footer>
@@ -79,25 +81,30 @@ for filename in os.listdir(folder_lowongan):
 </body>
 </html>
 """
-        with open(os.path.join(folder_output, output_filename), "w", encoding="utf-8") as f:
-            f.write(html_output)
 
-        # Tambahkan ke index.html bagian card
-        card_html = f"""
-    <div class="card">
-      <a href="{output_filename}">
-        {"<img src='gambar/" + image + "' alt='" + title + "'>" if image else ""}
-        <h3>{title}</h3>
+    # Simpan halaman lowongan
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(lowongan_html)
+
+    # Tambahkan kartu ke beranda
+    cards_html += f"""
+    <div class="job-card">
+      <a href="{filename}">
+        {f'<img src="gambar/{image}" alt="Flyer" class="card-image">' if image else ''}
+        <h2 class="card-title">{title}</h2>
+        <p class="card-date">{date}</p>
       </a>
     </div>
-"""
-        cards_html += card_html
+    """
 
-# Sisipkan semua cards ke template index
-index_final = index_template.replace("<!-- GENERATED_CARDS -->", cards_html)
+# Bangun halaman index.html
+with open('index.html', 'r', encoding='utf-8') as f:
+    index_template = f.read()
 
-# Simpan sebagai index.html
-with open(file_index_output, "w", encoding="utf-8") as f:
-    f.write(index_final)
+new_index = index_template.replace(
+    '<!-- GENERATED_CARDS -->',
+    '<!-- GENERATED_CARDS -->\n' + cards_html.strip()
+)
 
-print("✅ Semua file HTML berhasil dibuat!")
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(new_index)

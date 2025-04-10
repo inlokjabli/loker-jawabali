@@ -209,3 +209,43 @@ footer {
   margin: 1.5em auto;
   border-radius: 10px;
 }
+
+.job-posting {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Coming Soon', cursive;
+}
+
+.job-title {
+  font-family: 'Permanent Marker', cursive;
+  color: limegreen;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.job-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 2rem auto;
+}
+
+.apply-button {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.apply-button a {
+  background-color: limegreen;
+  color: black;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.apply-button a:hover {
+  background-color: #32cd32;
+}
