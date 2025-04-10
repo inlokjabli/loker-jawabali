@@ -1,14 +1,14 @@
 import os
+import re
+from datetime import datetime
 
 LOWONGAN_FOLDER = "lowongan"
-GAMBAR_FOLDER = "gambar"
-OUTPUT_FOLDER = "."
 TEMPLATE_FILE = "template.html"
 INDEX_FILE = "index.html"
 
 CARD_TEMPLATE = '''  <a href="{filename}" class="card-link">
     <div class="card">
-      <img src="{image}" alt="{title}" />
+      <img src="gambar/{image}" alt="{title}" />
       <div class="card-title">{title}</div>
     </div>
   </a>
@@ -44,41 +44,34 @@ def konversi_md_ke_html(markdown):
         else:
             content_lines.append(line)
 
-    content_html = "\n".join(content_lines).strip().replace("\n", "<br>")
-    
-    # Tambahkan tombol jika ada apply_url
-    if apply_url:
-        content_html += f'<br><br><a href="{apply_url}" class="apply-button" target="_blank">Lamar Sekarang</a>'
+    content_md = "\n".join(content_lines).strip()
+    # Konversi markdown sederhana
+    content_html = re.sub(r"^## ?(.*)", r"<h2 style='color:limegreen;'>\1</h2>", content_md, flags=re.MULTILINE)
+    content_html = content_html.replace("\n", "<br>")
 
-    return title, date, image, content_html
+    return title, date, image, apply_url, content_html
 
-def buat_html(judul, tanggal, gambar, isi, template):
+def buat_html(judul, tanggal, gambar, apply_url, isi, template):
     html = template.replace("{{ title }}", judul)
     html = html.replace("{{ date }}", tanggal)
     html = html.replace("{{ image }}", gambar)
     html = html.replace("{{ content }}", isi)
+
+    if apply_url:
+        tombol = f'''
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="{apply_url}" target="_blank" style="background-color: limegreen; color: black; padding: 12px 25px; border-radius: 6px; font-weight: bold; text-decoration: none;">Lamar Sekarang</a>
+        </div>
+        '''
+    else:
+        tombol = ""
+
+    html = html.replace("{{ apply_button }}", tombol)
     return html
-
-def tambah_ke_index(nama_file, judul, gambar):
-    if not os.path.exists(INDEX_FILE):
-        print("❌ index.html tidak ditemukan.")
-        return
-
-    with open(INDEX_FILE, "r", encoding="utf-8") as f:
-        index_html = f.read()
-
-    kartu = CARD_TEMPLATE.format(filename=nama_file, title=judul, image=gambar)
-    if kartu in index_html:
-        print(f"⚠️ Sudah ada: {nama_file} di index.html")
-        return
-
-    index_html = index_html.replace("<!-- GENERATED_CARDS -->", kartu + "\n  <!-- GENERATED_CARDS -->")
-
-    with open(INDEX_FILE, "w", encoding="utf-8") as f:
-        f.write(index_html)
 
 def proses_file():
     template = baca_template()
+    postingan = []
 
     for nama_file in os.listdir(LOWONGAN_FOLDER):
         if nama_file.endswith(".md"):
@@ -86,15 +79,40 @@ def proses_file():
             with open(path_file, "r", encoding="utf-8") as f:
                 markdown = f.read()
 
-            judul, tanggal, gambar, isi = konversi_md_ke_html(markdown)
-            nama_html = nama_file.replace(".md", ".html").lower()
-            html = buat_html(judul, tanggal, gambar, isi, template)
+            judul, tanggal_str, gambar, apply_url, isi = konversi_md_ke_html(markdown)
+            try:
+                tanggal_obj = datetime.strptime(tanggal_str, "%Y-%m-%d")
+            except ValueError:
+                tanggal_obj = datetime.min
 
+            nama_html = nama_file.replace(".md", ".html").lower()
+            html = buat_html(judul, tanggal_str, gambar, apply_url, isi, template)
+
+            # Simpan HTML
             with open(nama_html, "w", encoding="utf-8") as f:
                 f.write(html)
             print(f"✅ Dibuat: {nama_html}")
 
-            tambah_ke_index(nama_html, judul, gambar)
+            postingan.append((tanggal_obj, nama_html, judul, gambar))
+
+    # Urutkan berdasarkan tanggal, terbaru di atas
+    postingan.sort(reverse=True)
+
+    # Bangun ulang index.html
+    if os.path.exists(INDEX_FILE):
+        with open(INDEX_FILE, "r", encoding="utf-8") as f:
+            index_html = f.read()
+        index_html = re.sub(r'(?s)<!-- GENERATED_CARDS -->.*?<!-- END_GENERATED_CARDS -->', '<!-- GENERATED_CARDS -->\n  <!-- END_GENERATED_CARDS -->', index_html)
+    else:
+        print("❌ index.html tidak ditemukan.")
+        return
+
+    kartu_html = "\n".join([CARD_TEMPLATE.format(filename=f, title=t, image=g) for _, f, t, g in postingan])
+    index_html = index_html.replace("<!-- GENERATED_CARDS -->\n  <!-- END_GENERATED_CARDS -->", f"<!-- GENERATED_CARDS -->\n{kartu_html}\n  <!-- END_GENERATED_CARDS -->")
+
+    with open(INDEX_FILE, "w", encoding="utf-8") as f:
+        f.write(index_html)
+    print("📄 index.html diperbarui!")
 
 if __name__ == "__main__":
     proses_file()
