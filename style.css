@@ -324,3 +324,19 @@ footer {
 .hidden {
   display: none;
 }
+
+/* ✨ Tambahan kecil untuk sentuhan akhir */
+.nav-left a:hover {
+  color: white;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.site-header:hover {
+  text-shadow: 0 0 8px limegreen;
+}
