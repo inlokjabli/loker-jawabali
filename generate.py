@@ -13,24 +13,22 @@ for md_file in md_files:
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
 
+    # Pisahkan front matter (metadata) dan isi markdown
     if content.startswith('---'):
         parts = content.split('---')
-        if len(parts) >= 3:
-            metadata_raw = parts[1]
-            body_md = '---'.join(parts[2:])
-        else:
-            metadata_raw = ''
-            body_md = content
+        metadata_raw = parts[1] if len(parts) >= 3 else ''
+        body_md = '---'.join(parts[2:]) if len(parts) >= 3 else content
     else:
-        metadata_raw = ''
-        body_md = content
+        metadata_raw, body_md = '', content
 
+    # Parsing metadata menjadi dictionary
     metadata = {}
     for line in metadata_raw.strip().split('\n'):
         if ':' in line:
             key, value = line.split(':', 1)
             metadata[key.strip()] = value.strip().strip('"')
 
+    # Ambil data dari metadata
     title = metadata.get('title', 'Judul Tidak Ditemukan')
     image = metadata.get('image', '')
     apply_url = metadata.get('apply_url', '')
@@ -40,25 +38,26 @@ for md_file in md_files:
     employment_type = metadata.get('employment_type', 'FULL_TIME')
     salary_raw = metadata.get('salary', '')
 
-    # Ambil hanya nilai awal salary (angka pertama)
+    # Format gaji
+    salary_cleaned = ''
     if salary_raw:
         salary_cleaned = salary_raw.replace('Rp', '').replace('.', '').split('-')[0].strip()
-    else:
-        salary_cleaned = ''
 
+    # Buat nama file output
     filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
+    # Konversi Markdown ke HTML
     body_html = markdown.markdown(body_md)
 
     # Format tanggal
     try:
         date_obj = datetime.strptime(date_str, '%Y-%m-%d')
         formatted_date = date_obj.strftime('%d-%m-%Y')
-    except:
+    except Exception:
         date_obj = datetime.min
         formatted_date = 'Tanggal Tidak Valid'
 
-    # Schema.org JobPosting
+    # Schema.org JobPosting (Google Jobs)
     jobposting_schema = f"""
     <script type="application/ld+json">
     {{
@@ -92,7 +91,7 @@ for md_file in md_files:
     </script>
     """ if date_str else ''
 
-    # HTML Halaman Lowongan
+    # HTML untuk halaman lowongan
     lowongan_html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -131,6 +130,7 @@ for md_file in md_files:
 </html>
 """
 
+    # Tulis file HTML jika belum ada
     if not os.path.exists(filename):
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(lowongan_html)
@@ -138,18 +138,21 @@ for md_file in md_files:
     else:
         print(f"⚠️  File dilewati (sudah ada): {filename}")
 
+    # Simpan data untuk index
     lowongan_data.append({
         'title': title,
         'image': image,
         'filename': filename,
         'date_obj': date_obj,
-        'formatted_date': formatted_date
+        'formatted_date': formatted_date,
+        'company': company,
+        'location': location
     })
 
-# Urutkan dari yang terbaru
+# Urutkan dari terbaru
 lowongan_data.sort(key=lambda x: x['date_obj'], reverse=True)
 
-# Kartu HTML
+# Bangun konten kartu lowongan
 cards_html = ''
 for data in lowongan_data:
     cards_html += f"""
@@ -158,11 +161,13 @@ for data in lowongan_data:
         {f'<img src="{image_folder}/{data["image"]}" alt="Flyer" class="card-image">' if data["image"] else ''}
         <h2 class="card-title">{data['title']}</h2>
         <p class="card-date">{data['formatted_date']}</p>
+        <p class="card-company">{data['company']}</p>
+        <p class="card-location">{data['location']}</p>
       </a>
     </div>
     """
 
-# Update index.html
+# Sisipkan ke index.html
 with open('template_index.html', 'r', encoding='utf-8') as f:
     index_template = f.read()
 

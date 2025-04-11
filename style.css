@@ -25,14 +25,21 @@ body {
 /* ✅ Navbar */
 nav {
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 15px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 30px;
   border-bottom: 2px solid limegreen;
   position: sticky;
   top: 58px;
   z-index: 1500;
   background-color: #000;
+  flex-wrap: wrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
 }
 
 nav a {
@@ -47,6 +54,18 @@ nav a {
 nav a:hover {
   color: limegreen;
   text-decoration: underline;
+}
+
+#search {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Coming Soon', cursive;
+  font-size: 14px;
+  max-width: 200px;
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid #444;
 }
 
 /* ✅ Grid & Card */
@@ -77,6 +96,14 @@ nav a:hover {
   height: auto;
   display: block;
   transition: 0.3s ease;
+  border-radius: 10px;
+  object-fit: cover;
+  height: 200px;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
 .card-title {
@@ -86,15 +113,13 @@ nav a:hover {
   color: white;
   text-align: center;
   font-family: Arial, sans-serif;
-  text-decoration: none; /* ✅ Hilangkan garis bawah jika ada */
+  text-decoration: none;
 }
 
-/* ✅ Hapus underline dari judul kartu yang dibungkus <a> */
 .card a {
   text-decoration: none;
 }
 
-/* ✅ Tanggal di kartu */
 .card-date {
   color: #ccc;
   text-align: center;
@@ -158,11 +183,22 @@ footer {
 @media (max-width: 600px) {
   nav {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
     gap: 10px;
   }
 
   nav a, .footer-links a {
     font-size: 16px;
+  }
+
+  #search {
+    margin-top: 10px;
+    width: 100%;
+    max-width: none;
   }
 
   .card-title {
@@ -254,27 +290,4 @@ footer {
   height: auto;
   margin: 0 auto 2rem auto;
   border-radius: 10px;
-}
-
-/* ✅ Tambahan khusus untuk gambar di kartu */
-.card img,
-.card-image {
-  width: 100%;
-  height: auto;
-  max-height: 250px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-.card img {
-  border-radius: 10px;
-  object-fit: cover;
-  height: 200px;
-  transition: transform 0.3s ease;
-}
-
-.card:hover img {
-  transform: scale(1.05);
-  filter: brightness(1.1);
 }

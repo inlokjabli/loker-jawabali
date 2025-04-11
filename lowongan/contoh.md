@@ -1,10 +1,10 @@
 ---
 title: "Judul Lowongan - Nama Perusahaan"
-date: YYYY-MM-DD
+date: 2025-04-10
 image: "contoh.jpg"
 apply_url: "https://contoh.url-lamaran.com"
 company: "Nama PT"
-location: "Lokasi lowongan"
+location: "Kota, Indonesia"
 employment_type: "FULL_TIME" # Opsi lain: PART_TIME, CONTRACTOR, INTERN
 salary: "4000000 per bulan"
 ---
@@ -33,4 +33,4 @@ Kami mencari Digital Marketing yang berpengalaman untuk mengelola kampanye sosia
 
 ---
 
-Segera lamar sekarang melalui link berikut:
+**Segera lamar sekarang melalui link berikut:**
