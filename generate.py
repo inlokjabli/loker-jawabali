@@ -67,7 +67,9 @@ for md_file in md_files:
   <main class="job-posting">
     <h1 class="job-title">{title}</h1>
     {f'<img src="gambar/{image}" alt="Flyer Lowongan" class="job-image">' if image else ''}
-    {body_html}
+    <div class="markdown-content">
+      {body_html}
+    </div>
     {f'<div class="apply-button"><a href="{apply_url}" target="_blank">Lamar Sekarang</a></div>' if apply_url else ''}
   </main>
 
@@ -88,7 +90,7 @@ for md_file in md_files:
 
     # Tambahkan kartu ke beranda
     cards_html += f"""
-    <div class="job-card">
+    <div class="card">
       <a href="{filename}">
         {f'<img src="gambar/{image}" alt="Flyer" class="card-image">' if image else ''}
         <h2 class="card-title">{title}</h2>

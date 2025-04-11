@@ -244,3 +244,26 @@ footer {
   margin: 0 auto 2rem auto;
   border-radius: 10px;
 }
+
+/* ✅ Tambahan khusus untuk gambar di kartu */
+.card img,
+.card-image {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.card img {
+  border-radius: 10px;
+  object-fit: cover;
+  height: 200px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}

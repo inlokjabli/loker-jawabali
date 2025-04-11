@@ -1,14 +1,22 @@
 ---
-title: "Contoh Lowongan"
-date: 2025-04-10
+title: "Judul Lowongan - Nama Perusahaan"
+date: YYYY-MM-DD
 image: "contoh.jpg"
+apply_url: "https://contoh.url-lamaran.com"
 ---
 
-## Ini adalah contoh postingan lowongan.
+## Nama Posisi Pertama (Penempatan: Lokasi)
 
-* Lokasi: Bali  
-* Posisi: Marketing  
-* Gaji: Kompetitif  
-* Deadline: 30 April 2025
+* Poin keahlian atau syarat 1
+* Poin keahlian atau syarat 2
+* Poin keahlian atau syarat 3
 
-Silakan kirim CV ke: email@contoh.com
+## Nama Posisi Kedua (Penempatan: Lokasi)
+
+* Poin keahlian atau syarat 1
+* Poin keahlian atau syarat 2
+* Poin keahlian atau syarat 3
+
+---
+
+Segera lamar sekarang melalui link berikut:
