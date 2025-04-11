@@ -35,6 +35,17 @@ for md_file in md_files:
     image = metadata.get('image', '')
     apply_url = metadata.get('apply_url', '')
     date_str = metadata.get('date', '')
+    company = metadata.get('company', 'Perusahaan Tidak Diketahui')
+    location = metadata.get('location', '')
+    employment_type = metadata.get('employment_type', 'FULL_TIME')
+    salary_raw = metadata.get('salary', '')
+
+    # Ambil hanya nilai awal salary (angka pertama)
+    if salary_raw:
+        salary_cleaned = salary_raw.replace('Rp', '').replace('.', '').split('-')[0].strip()
+    else:
+        salary_cleaned = ''
+
     filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
     body_html = markdown.markdown(body_md)
@@ -55,15 +66,27 @@ for md_file in md_files:
       "@type": "JobPosting",
       "title": "{title}",
       "datePosted": "{date_str}",
-      "description": "{body_md.replace('"', "'").replace('\n', ' ')}",
+      "description": "{body_html.replace('"', "'").replace('\n', ' ')}",
       {"\"image\": \"" + image_folder + "/" + image + "\"," if image else ""}
-      {"\"hiringOrganization\": {\"@type\": \"Organization\", \"name\": \"\", \"sameAs\": \"\"}," if True else ""}
-      {"\"jobLocation\": {\"@type\": \"Place\", \"address\": {\"@type\": \"PostalAddress\", \"addressCountry\": \"ID\"}},"}
-      "employmentType": "FULL_TIME",
+      "hiringOrganization": {{
+        "@type": "Organization",
+        "name": "{company}",
+        "sameAs": "https://loker-jawabali.netlify.app/"
+      }},
+      "jobLocation": {{
+        "@type": "Place",
+        "address": {{
+          "@type": "PostalAddress",
+          "addressLocality": "{location}",
+          "addressCountry": "ID"
+        }}
+      }},
+      "employmentType": "{employment_type}",
       "applicantLocationRequirements": {{
         "@type": "Country",
         "name": "Indonesia"
       }},
+      {"\"baseSalary\": {{\"@type\": \"MonetaryAmount\", \"currency\": \"IDR\", \"value\": {{\"@type\": \"QuantitativeValue\", \"value\": \"" + salary_cleaned + "\", \"unitText\": \"MONTH\"}}}}," if salary_cleaned else ""}
       "directApply": true
     }}
     </script>

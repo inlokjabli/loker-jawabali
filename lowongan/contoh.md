@@ -6,13 +6,13 @@ apply_url: "https://contoh.url-lamaran.com"
 company: "Nama PT"
 location: "Lokasi lowongan"
 employment_type: "FULL_TIME" # Opsi lain: PART_TIME, CONTRACTOR, INTERN
-salary: "Rp 4.000.000 - Rp6.000.000 per bulan"
+salary: "4000000 per bulan"
 ---
 
 ## Nama Posisi Pertama (Penempatan: Lokasi)
 
 **Penempatan:** Kota, Provinsi 
-**Gaji:** Rp4.000.000 - Rp6.000.000 per bulan  
+**Gaji:** Rp4.000.000 per bulan  
 **Jenis Pekerjaan:** Full Time 
 
 ## Nama Posisi Kedua (Penempatan: Lokasi)
