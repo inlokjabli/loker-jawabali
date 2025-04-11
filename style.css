@@ -86,8 +86,15 @@ nav a:hover {
   color: white;
   text-align: center;
   font-family: Arial, sans-serif;
+  text-decoration: none; /* ✅ Hilangkan garis bawah jika ada */
 }
 
+/* ✅ Hapus underline dari judul kartu yang dibungkus <a> */
+.card a {
+  text-decoration: none;
+}
+
+/* ✅ Tanggal di kartu */
 .card-date {
   color: #ccc;
   text-align: center;
@@ -101,19 +108,23 @@ a.card-link {
 
 /* ✅ Tombol Lamar Sekarang */
 .apply-button {
-  display: inline-block;
-  background-color: limegreen;
-  color: black;
-  font-weight: bold;
-  padding: 12px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: 0.3s ease;
-  font-family: Arial, sans-serif;
-  margin-top: 2rem;
+  text-align: center;
+  margin: 2rem 0;
 }
 
-.apply-button:hover {
+.apply-button a {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: limegreen;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.apply-button a:hover {
   background-color: #267a1a;
   color: white;
   transform: scale(1.05);
