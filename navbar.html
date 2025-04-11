@@ -12,7 +12,7 @@
 function filterJobs() {
   const input = document.getElementById("searchInput");
   const filter = input.value.toLowerCase();
-  const cards = document.getElementsByClassName("job-card");
+  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
 
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i];
