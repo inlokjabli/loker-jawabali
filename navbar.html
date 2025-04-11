@@ -1,7 +1,23 @@
-<nav>
-  <div class="nav-links">
+<nav class="navbar">
+  <div class="nav-left">
     <a href="index.html">Beranda</a>
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </div>
-  <input type="text" id="search" placeholder="Cari lowongan..." />
+  <div class="nav-right">
+    <input type="text" id="searchInput" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
+  </div>
 </nav>
+
+<script>
+function filterJobs() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const cards = document.getElementsByClassName("job-card");
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const text = card.textContent || card.innerText;
+    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>

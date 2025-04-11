@@ -291,3 +291,36 @@ footer {
   margin: 0 auto 2rem auto;
   border-radius: 10px;
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 10px;
+  border-bottom: 2px solid limegreen;
+}
+
+.nav-left a {
+  margin-right: 15px;
+  color: limegreen;
+  font-family: 'Coming Soon', cursive;
+  text-decoration: none;
+}
+
+.nav-right input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid limegreen;
+  background-color: #111;
+  color: white;
+  font-family: 'Coming Soon', cursive;
+}
+
+.nav-right input::placeholder {
+  color: #ccc;
+}
+
+.hidden {
+  display: none;
+}

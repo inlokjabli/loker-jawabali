@@ -33,7 +33,7 @@ for md_file in md_files:
     image = metadata.get('image', '')
     apply_url = metadata.get('apply_url', '')
     date_str = metadata.get('date', '')
-    company = metadata.get('company', 'Perusahaan Tidak Diketahui')
+    company = metadata.get('company', '')
     location = metadata.get('location', '')
     employment_type = metadata.get('employment_type', 'FULL_TIME')
     salary_raw = metadata.get('salary', '')
@@ -54,7 +54,6 @@ for md_file in md_files:
         date_obj = datetime.min
         formatted_date = 'Tanggal Tidak Valid'
 
-    # Buat nama file output
     filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
     # Schema.org
@@ -103,12 +102,8 @@ for md_file in md_files:
   {jobposting_schema}
 </head>
 <body>
-  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
-
-  <nav>
-    <a href="index.html">Beranda</a>
-    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
-  </nav>
+  <!--#include virtual="header.html" -->
+  <!--#include virtual="navbar.html" -->
 
   <main class="job-posting">
     <h1 class="job-title">{title}</h1>
@@ -119,18 +114,11 @@ for md_file in md_files:
     {f'<div class="apply-button"><a href="{apply_url}" target="_blank">LAMAR SEKARANG</a></div>' if apply_url else ''}
   </main>
 
-  <footer>
-    <div class="footer-links">
-      <a href="privacy-policy.html">Privasi</a>
-      <a href="note.html">Note</a>
-      <a href="about.html">About</a>
-    </div>
-  </footer>
+  <!--#include virtual="footer.html" -->
 </body>
 </html>
 """
 
-    # Simpan file jika belum ada
     if not os.path.exists(filename):
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(lowongan_html)
@@ -138,7 +126,6 @@ for md_file in md_files:
     else:
         print(f"⚠️  File dilewati (sudah ada): {filename}")
 
-    # Simpan data untuk index
     lowongan_data.append({
         'title': title,
         'image': image,
@@ -152,7 +139,7 @@ for md_file in md_files:
 # Urutkan dari terbaru
 lowongan_data.sort(key=lambda x: x['date_obj'], reverse=True)
 
-# Bangun konten kartu lowongan
+# Bangun kartu lowongan
 cards_html = ''
 for data in lowongan_data:
     cards_html += f"""
@@ -161,8 +148,8 @@ for data in lowongan_data:
         {f'<img src="{image_folder}/{data["image"]}" alt="Flyer" class="card-image">' if data["image"] else ''}
         <h2 class="card-title">{data['title']}</h2>
         <p class="card-date">{data['formatted_date']}</p>
-        <p class="card-company">{data['company']}</p>
-        <p class="card-location">{data['location']}</p>
+        {f"<p class='card-company'>{data['company']}</p>" if data['company'] else ''}
+        {f"<p class='card-location'>{data['location']}</p>" if data['location'] else ''}
       </a>
     </div>
     """
