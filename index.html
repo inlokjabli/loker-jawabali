@@ -3,34 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Loker Jawa Bali</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="../style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {{ schema }}
+  </script>
 </head>
 <body>
   <!-- Header -->
-  <!--#include virtual="header.html" -->
+  <!--#include virtual="../header.html" -->
 
   <!-- Navbar -->
-  <!--#include virtual="navbar.html" -->
+  <!--#include virtual="../navbar.html" -->
 
   <main>
-    <h1>Lowongan Kerja Terbaru</h1>
-    <div id="job-list" class="job-grid">
-      <!-- Daftar lowongan kerja akan dimasukkan di sini oleh generate.py -->
-      <!-- Contoh isi:
-      <div class="job-item">
-        <a href="loker-multimedia-nusantara.html">
-          <img src="gambar/multimedia-nusantara.jpeg" alt="Lowongan" />
-          <h2 class="job-title">Multimedia Nusantara</h2>
-          <p class="job-date">10 April 2025</p>
-        </a>
-      </div>
-      -->
+    <h1 class="job-title">{{ title }}</h1>
+    {% if image %}
+    <img src="{{ image }}" alt="Flyer Lowongan" class="job-flyer">
+    {% endif %}
+    <article class="job-content">
+      {{ content }}
+    </article>
+
+    {% if apply_url %}
+    <div class="apply-button-container">
+      <a href="{{ apply_url }}" class="apply-button">Lamar Sekarang</a>
     </div>
+    {% endif %}
   </main>
 
   <!-- Footer -->
-  <!--#include virtual="footer.html" -->
+  <!--#include virtual="../footer.html" -->
 </body>
 </html>
