@@ -1,143 +1,81 @@
 import os
 import markdown
-import yaml
-from datetime import datetime
+from datetime import date
 
-# Paths
-lowongan_folder = "lowongan"
-output_folder = "."
-template_file = "template_index.html"
-header_file = "header.html"
-navbar_file = "navbar.html"
-footer_file = "footer.html"
+# --- Konfigurasi dasar
+BASE_URL = "https://loker-jawabali.netlify.app/"
+MD_FOLDER = "lowongan"
+OUT_FOLDER = "."
+TEMPLATE_FILE = "template_index.html"
+SITEMAP_FILE = "sitemap.xml"
+PARTIALS = {
+    "header": "header.html",
+    "navbar": "navbar.html",
+    "footer": "footer.html"
+}
+today = date.today().isoformat()
 
-# Fungsi untuk menghasilkan kartu HTML (hanya tampil: gambar, judul, tanggal)
-def buat_kartu_lowongan(data, filename):
-    tanggal = data.get('datePosted', '')
+# --- Fungsi ambil partial (header, navbar, footer)
+def load_partial(name):
     try:
-        tanggal_format = datetime.strptime(tanggal, "%Y-%m-%d").strftime("%d %b %Y")
-    except:
-        tanggal_format = tanggal
-    return f'''
-    <a href="{filename}" class="card" data-title="{data.get('title', '').lower()}" data-company="{data.get('hiringOrganization', {}).get('name', '').lower()}" data-location="{data.get('jobLocation', {}).get('address', {}).get('addressLocality', '').lower()}">
-        <img src="{data.get('image', '')}" alt="Flyer lowongan">
-        <h2>{data.get('title', '')}</h2>
-        <p class="tanggal-posting">{tanggal_format}</p>
-    </a>
-    '''
+        with open(PARTIALS[name], "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
 
-# Fungsi schema JobPosting JSON-LD
-def buat_schema_json_ld(data):
-    schema = {
-        "@context": "https://schema.org/",
-        "@type": "JobPosting",
-        "title": data.get("title", ""),
-        "description": data.get("description", ""),
-        "datePosted": data.get("datePosted", datetime.today().strftime('%Y-%m-%d')),
-        "employmentType": data.get("employmentType", "FULL_TIME"),
-        "hiringOrganization": {
-            "@type": "Organization",
-            "name": data.get("hiringOrganization", {}).get("name", ""),
-            "sameAs": data.get("hiringOrganization", {}).get("sameAs", ""),
-            "logo": data.get("hiringOrganization", {}).get("logo", "")
-        },
-        "jobLocation": {
-            "@type": "Place",
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": data.get("jobLocation", {}).get("address", {}).get("addressLocality", ""),
-                "addressRegion": data.get("jobLocation", {}).get("address", {}).get("addressRegion", ""),
-                "addressCountry": "ID"
-            }
-        }
-    }
-    return f'<script type="application/ld+json">\n{yaml.safe_dump(schema, allow_unicode=True)}\n</script>'
+# --- Fungsi buat halaman HTML dari markdown
+def convert_md_to_html(md_path):
+    with open(md_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    html = markdown.markdown(text, extensions=["fenced_code", "tables", "toc"])
+    return html
 
-semua_kartu = set()
-html_kartu = ""
+# --- Fungsi masukkan HTML ke template
+def render_with_template(content_html, title="Lowongan Kerja"):
+    with open(TEMPLATE_FILE, "r", encoding="utf-8") as f:
+        template = f.read()
 
-# Proses semua markdown di folder lowongan/
-for filename in os.listdir(lowongan_folder):
-    if not filename.endswith(".md"):
-        continue
+    return template.replace("{{header}}", load_partial("header")) \
+                   .replace("{{navbar}}", load_partial("navbar")) \
+                   .replace("{{footer}}", load_partial("footer")) \
+                   .replace("{{content}}", content_html)
 
-    filepath = os.path.join(lowongan_folder, filename)
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
+# --- Proses generate semua halaman
+generated_files = []
+for filename in os.listdir(MD_FOLDER):
+    if filename.endswith(".md"):
+        slug = filename.replace(".md", "")
+        html_filename = f"{slug}.html"
+        html_path = os.path.join(OUT_FOLDER, html_filename)
+        md_path = os.path.join(MD_FOLDER, filename)
 
-    if content.startswith("---"):
-        parts = content.split("---", 2)
-        meta = yaml.safe_load(parts[1])
-        isi_markdown = parts[2]
-    else:
-        print(f"❌ Format YAML salah: {filename}")
-        continue
+        if not os.path.exists(html_path) or os.path.getmtime(md_path) > os.path.getmtime(html_path):
+            content_html = convert_md_to_html(md_path)
+            final_html = render_with_template(content_html)
+            with open(html_path, "w", encoding="utf-8") as f:
+                f.write(final_html)
+            print(f"✅ {html_filename} berhasil dibuat.")
+        else:
+            print(f"⏭ {html_filename} dilewati (tidak ada perubahan).")
 
-    # Normalisasi data untuk keperluan schema dan pencarian
-    meta.setdefault("hiringOrganization", {"name": meta.get("company", "")})
-    meta.setdefault("jobLocation", {"address": {"addressLocality": meta.get("location", "")}})
-    meta.setdefault("datePosted", meta.get("date", datetime.today().strftime('%Y-%m-%d')))
-    html_content = markdown.markdown(isi_markdown)
-    schema_json_ld = buat_schema_json_ld(meta)
+        generated_files.append(html_filename)
 
-    # Komponen
-    with open(header_file, "r", encoding="utf-8") as f: header_html = f.read()
-    with open(navbar_file, "r", encoding="utf-8") as f: navbar_html = f.read()
-    with open(footer_file, "r", encoding="utf-8") as f: footer_html = f.read()
+# --- Buat sitemap.xml otomatis
+static_pages = [
+    "index.html", "about.html", "note.html", "privacy-policy.html"
+]
+all_html_files = static_pages + generated_files
 
-    html_page = f'''<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{meta.get("title", "")} - Loker Jawa Bali</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
-  {schema_json_ld}
-</head>
-<body>
-{header_html}
-{navbar_html}
-<main>
-  <article class="job-post">
-    <h1>{meta.get("title", "")}</h1>
-    <img src="{meta.get("image", "")}" alt="Flyer lowongan">
-    <div>{html_content}</div>
-    {'<div class="center-button"><a href="' + meta.get("apply_url", "") + '" class="apply-button">Lamar Sekarang</a></div>' if meta.get("apply_url") else ''}
-  </article>
-</main>
-{footer_html}
-</body>
-</html>
-'''
+with open(SITEMAP_FILE, "w", encoding="utf-8") as f:
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    f.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
 
-    output_filename = filename.replace(".md", ".html")
-    output_path = os.path.join(output_folder, output_filename)
+    for html_file in sorted(set(all_html_files)):
+        f.write("  <url>\n")
+        f.write(f"    <loc>{BASE_URL}{html_file}</loc>\n")
+        f.write(f"    <lastmod>{today}</lastmod>\n")
+        f.write("  </url>\n")
 
-    if os.path.exists(output_path):
-        print(f"⚠️ Lewati (sudah ada): {output_filename}")
-    else:
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(html_page)
-        print(f"✅ Dibuat: {output_filename}")
+    f.write('</urlset>\n')
 
-    # Tambah ke halaman index
-    id_kartu = meta.get("title", "").strip().lower()
-    if id_kartu not in semua_kartu:
-        semua_kartu.add(id_kartu)
-        html_kartu += buat_kartu_lowongan(meta, output_filename)
-
-# Buat index.html
-if os.path.exists(template_file):
-    with open(template_file, "r", encoding="utf-8") as f:
-        template_content = f.read()
-
-    if "{{ job_cards }}" in template_content:
-        index_html = template_content.replace("{{ job_cards }}", html_kartu)
-        with open(os.path.join(output_folder, "index.html"), "w", encoding="utf-8") as f:
-            f.write(index_html)
-        print("✅ index.html berhasil dibuat.")
-    else:
-        print("❌ Placeholder {{ job_cards }} tidak ditemukan.")
-else:
-    print("❌ File template_index.html tidak ditemukan.")
+print("🗺️  sitemap.xml berhasil diperbarui.")

@@ -1,12 +1,8 @@
 <nav class="navbar">
-  <div class="nav-left">
-    <a href="index.html">Beranda</a>
-    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
-  </div>
-  <div class="nav-right">
-    <form id="search-form" action="index.html" method="GET">
-      <input type="text" id="search" name="q" placeholder="Cari lowongan..." />
-      <button type="submit">Cari</button>
-    </form>
-  </div>
+  <a href="index.html">Beranda</a>
+  <a href="about.html">Temukan Kami</a>
+  <form class="search-form" action="index.html" method="get">
+    <input type="text" name="q" placeholder="Cari lowongan..." value="{{ query }}">
+    <button type="submit">Cari</button>
+  </form>
 </nav>

@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
-    <loc>https://loker-jawabali.netlify.app/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <loc>https://loker-jawabali.netlify.app/about.html</loc>
+    <lastmod>2025-04-11</lastmod>
   </url>
-
+  <url>
+    <loc>https://loker-jawabali.netlify.app/contoh.html</loc>
+    <lastmod>2025-04-11</lastmod>
+  </url>
+  <url>
+    <loc>https://loker-jawabali.netlify.app/guru-matematika-bali.html</loc>
+    <lastmod>2025-04-11</lastmod>
+  </url>
+  <url>
+    <loc>https://loker-jawabali.netlify.app/index.html</loc>
+    <lastmod>2025-04-11</lastmod>
+  </url>
   <url>
     <loc>https://loker-jawabali.netlify.app/loker-sales-dm.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2025-04-11</lastmod>
   </url>
-
   <url>
-    <loc>https://loker-jawabali.netlify.app/loker-multimedia-nusantara.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://loker-jawabali.netlify.app/note.html</loc>
+    <lastmod>2025-04-11</lastmod>
   </url>
-
-  <!-- Tambahkan URL baru di sini setiap ada lowongan baru -->
-  
+  <url>
+    <loc>https://loker-jawabali.netlify.app/privacy-policy.html</loc>
+    <lastmod>2025-04-11</lastmod>
+  </url>
 </urlset>

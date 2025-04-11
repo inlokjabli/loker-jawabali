@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://loker-jawabali.netlify.app/sitemap.xml
+Sitemap: https://namasitusmu.netlify.app/sitemap.xml

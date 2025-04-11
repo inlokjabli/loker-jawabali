@@ -3,53 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Loker Jawa Bali</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {{ schema }}
+  </script>
 </head>
 <body>
-
   <!-- Header -->
-  {% include 'header.html' %}
+  <!--#include virtual="../header.html" -->
 
-  <!-- Navbar (dengan kolom pencarian + tombol) -->
-  {% include 'navbar.html' %}
+  <!-- Navbar -->
+  <!--#include virtual="../navbar.html" -->
 
-  <!-- Konten utama -->
   <main>
-    <section class="job-list">
-      <div class="grid" id="job-grid">
-        {{ job_cards }}
-      </div>
-    </section>
+    <h1 class="job-title">{{ title }}</h1>
+    {% if image %}
+    <img src="{{ image }}" alt="Flyer Lowongan" class="job-flyer">
+    {% endif %}
+    <article class="job-content">
+      {{ content }}
+    </article>
+
+    {% if apply_url %}
+    <div class="apply-button-container">
+      <a href="{{ apply_url }}" class="apply-button">Lamar Sekarang</a>
+    </div>
+    {% endif %}
   </main>
 
   <!-- Footer -->
-  {% include 'footer.html' %}
-
-  <!-- Script pencarian berbasis query string -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const query = (urlParams.get("q") || "").toLowerCase();
-      const cards = document.querySelectorAll(".card");
-
-      if (query) {
-        const input = document.getElementById("search");
-        if (input) input.value = query;
-
-        cards.forEach(card => {
-          const title = card.getAttribute("data-title") || "";
-          const company = card.getAttribute("data-company") || "";
-          const location = card.getAttribute("data-location") || "";
-          const match = title.includes(query) || company.includes(query) || location.includes(query);
-          card.classList.toggle("hidden", !match);
-        });
-      }
-    });
-  </script>
-
+  <!--#include virtual="../footer.html" -->
 </body>
 </html>

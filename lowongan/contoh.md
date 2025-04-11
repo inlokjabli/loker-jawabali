@@ -1,12 +1,10 @@
 ---
 title: "Judul Lowongan - Nama Perusahaan"
-date: 2025-04-10
-image: "contoh.jpg"
-apply_url: "https://contoh.url-lamaran.com"
 company: "Nama PT"
-location: "Kota, Indonesia"
-employment_type: "FULL_TIME" # Opsi lain: PART_TIME, CONTRACTOR, INTERN
-salary: "4000000 per bulan"
+location: "Kota, Provinsi"
+date: 2025-04-10
+image: "gambar/contoh.jpg"
+apply_link: "https://contoh.url-lamaran.com"
 ---
 
 ## Nama Posisi Pertama (Penempatan: Lokasi)
