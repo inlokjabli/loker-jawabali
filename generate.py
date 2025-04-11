@@ -11,18 +11,22 @@ header_file = "header.html"
 navbar_file = "navbar.html"
 footer_file = "footer.html"
 
-# Fungsi untuk menghasilkan kartu HTML
+# Fungsi untuk menghasilkan kartu HTML (hanya tampil: gambar, judul, tanggal)
 def buat_kartu_lowongan(data, filename):
+    tanggal = data.get('datePosted', '')
+    try:
+        tanggal_format = datetime.strptime(tanggal, "%Y-%m-%d").strftime("%d %b %Y")
+    except:
+        tanggal_format = tanggal
     return f'''
     <a href="{filename}" class="card" data-title="{data.get('title', '').lower()}" data-company="{data.get('hiringOrganization', {}).get('name', '').lower()}" data-location="{data.get('jobLocation', {}).get('address', {}).get('addressLocality', '').lower()}">
         <img src="{data.get('image', '')}" alt="Flyer lowongan">
         <h2>{data.get('title', '')}</h2>
-        <p>{data.get('hiringOrganization', {}).get('name', '')}</p>
-        <p>{data.get('jobLocation', {}).get('address', {}).get('addressLocality', '')}</p>
+        <p class="tanggal-posting">{tanggal_format}</p>
     </a>
     '''
 
-# Fungsi untuk membuat schema JSON-LD
+# Fungsi schema JobPosting JSON-LD
 def buat_schema_json_ld(data):
     schema = {
         "@context": "https://schema.org/",
@@ -47,35 +51,41 @@ def buat_schema_json_ld(data):
             }
         }
     }
-    return f'<script type="application/ld+json">\n{yaml.safe_dump(schema, default_flow_style=False, allow_unicode=True)}\n</script>'
+    return f'<script type="application/ld+json">\n{yaml.safe_dump(schema, allow_unicode=True)}\n</script>'
 
 semua_kartu = set()
 html_kartu = ""
 
-# Proses semua markdown
+# Proses semua markdown di folder lowongan/
 for filename in os.listdir(lowongan_folder):
-    if filename.endswith(".md"):
-        filepath = os.path.join(lowongan_folder, filename)
-        with open(filepath, "r", encoding="utf-8") as f:
-            content = f.read()
+    if not filename.endswith(".md"):
+        continue
 
-        if content.startswith("---"):
-            parts = content.split("---", 2)
-            meta = yaml.safe_load(parts[1])
-            isi_markdown = parts[2]
-        else:
-            print(f"❌ ERROR format YAML: {filename}")
-            continue
+    filepath = os.path.join(lowongan_folder, filename)
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read()
 
-        html_content = markdown.markdown(isi_markdown)
-        schema_json_ld = buat_schema_json_ld(meta)
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        meta = yaml.safe_load(parts[1])
+        isi_markdown = parts[2]
+    else:
+        print(f"❌ Format YAML salah: {filename}")
+        continue
 
-        # Baca template
-        with open(header_file, "r", encoding="utf-8") as f: header_html = f.read()
-        with open(navbar_file, "r", encoding="utf-8") as f: navbar_html = f.read()
-        with open(footer_file, "r", encoding="utf-8") as f: footer_html = f.read()
+    # Normalisasi data untuk keperluan schema dan pencarian
+    meta.setdefault("hiringOrganization", {"name": meta.get("company", "")})
+    meta.setdefault("jobLocation", {"address": {"addressLocality": meta.get("location", "")}})
+    meta.setdefault("datePosted", meta.get("date", datetime.today().strftime('%Y-%m-%d')))
+    html_content = markdown.markdown(isi_markdown)
+    schema_json_ld = buat_schema_json_ld(meta)
 
-        html_page = f'''<!DOCTYPE html>
+    # Komponen
+    with open(header_file, "r", encoding="utf-8") as f: header_html = f.read()
+    with open(navbar_file, "r", encoding="utf-8") as f: navbar_html = f.read()
+    with open(footer_file, "r", encoding="utf-8") as f: footer_html = f.read()
+
+    html_page = f'''<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -93,7 +103,7 @@ for filename in os.listdir(lowongan_folder):
     <h1>{meta.get("title", "")}</h1>
     <img src="{meta.get("image", "")}" alt="Flyer lowongan">
     <div>{html_content}</div>
-    {'<div class="center-button"><a href="' + meta.get("applyUrl", "") + '" class="apply-button">Lamar Sekarang</a></div>' if meta.get("applyUrl") else ''}
+    {'<div class="center-button"><a href="' + meta.get("apply_url", "") + '" class="apply-button">Lamar Sekarang</a></div>' if meta.get("apply_url") else ''}
   </article>
 </main>
 {footer_html}
@@ -101,26 +111,23 @@ for filename in os.listdir(lowongan_folder):
 </html>
 '''
 
-        output_filename = filename.replace(".md", ".html")
-        output_path = os.path.join(output_folder, output_filename)
+    output_filename = filename.replace(".md", ".html")
+    output_path = os.path.join(output_folder, output_filename)
 
-        # Cek duplikat
-        if os.path.exists(output_path):
-            print(f"⚠️ Dilewati (sudah ada): {output_filename}")
-        else:
-            with open(output_path, "w", encoding="utf-8") as f:
-                f.write(html_page)
-            print(f"✅ Dibuat: {output_filename}")
+    if os.path.exists(output_path):
+        print(f"⚠️ Lewati (sudah ada): {output_filename}")
+    else:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html_page)
+        print(f"✅ Dibuat: {output_filename}")
 
-        # Cek duplikat job_cards
-        id_kartu = meta.get("title", "").strip().lower()
-        if id_kartu in semua_kartu:
-            print(f"⚠️ Duplikat judul ditemukan: {meta.get('title', '')}")
-        else:
-            semua_kartu.add(id_kartu)
-            html_kartu += buat_kartu_lowongan(meta, output_filename)
+    # Tambah ke halaman index
+    id_kartu = meta.get("title", "").strip().lower()
+    if id_kartu not in semua_kartu:
+        semua_kartu.add(id_kartu)
+        html_kartu += buat_kartu_lowongan(meta, output_filename)
 
-# Buat index.html dari template
+# Buat index.html
 if os.path.exists(template_file):
     with open(template_file, "r", encoding="utf-8") as f:
         template_content = f.read()

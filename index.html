@@ -14,34 +14,30 @@
   <!-- Header -->
   {% include 'header.html' %}
 
-  <!-- Navbar (dengan kolom pencarian) -->
+  <!-- Navbar (dengan kolom pencarian + tombol) -->
   {% include 'navbar.html' %}
 
   <!-- Konten utama -->
   <main>
     <section class="job-list">
-      <div class="grid">
-        <!-- Loop konten lowongan -->
+      <div class="grid" id="job-grid">
         
-    <a href="contoh.html" class="card" data-title="judul lowongan - nama perusahaan" data-company="" data-location="">
+    <a href="contoh.html" class="card" data-title="judul lowongan - nama perusahaan" data-company="nama pt" data-location="kota, indonesia">
         <img src="contoh.jpg" alt="Flyer lowongan">
         <h2>Judul Lowongan - Nama Perusahaan</h2>
-        <p></p>
-        <p></p>
+        <p class="tanggal-posting">2025-04-10</p>
     </a>
     
-    <a href="guru-matematika-bali.html" class="card" data-title="guru matematika - sma citra bali" data-company="" data-location="">
+    <a href="guru-matematika-bali.html" class="card" data-title="guru matematika - sma citra bali" data-company="sma citra" data-location="bali, indonesia">
         <img src="guru-matematika.jpg" alt="Flyer lowongan">
         <h2>Guru Matematika - SMA Citra Bali</h2>
-        <p></p>
-        <p></p>
+        <p class="tanggal-posting">2025-04-11</p>
     </a>
     
-    <a href="loker-sales-dm.html" class="card" data-title="lowongan digital marketing & sales - pt. ami" data-company="" data-location="">
+    <a href="loker-sales-dm.html" class="card" data-title="lowongan digital marketing & sales - pt. ami" data-company="pt ami" data-location="semarang, indonesia">
         <img src="flyer_baru_AMI.jpg" alt="Flyer lowongan">
         <h2>Lowongan Digital Marketing & Sales - PT. AMI</h2>
-        <p></p>
-        <p></p>
+        <p class="tanggal-posting">2025-04-12</p>
     </a>
     
       </div>
@@ -51,19 +47,25 @@
   <!-- Footer -->
   {% include 'footer.html' %}
 
-  <!-- Script pencarian -->
+  <!-- Script pencarian berbasis query string -->
   <script>
-    const searchInput = document.getElementById('search');
-    searchInput?.addEventListener('input', function () {
-      const query = this.value.toLowerCase();
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        const title = card.getAttribute('data-title');
-        const company = card.getAttribute('data-company');
-        const location = card.getAttribute('data-location');
-        const match = title.includes(query) || company.includes(query) || location.includes(query);
-        card.classList.toggle('hidden', !match);
-      });
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = (urlParams.get("q") || "").toLowerCase();
+      const cards = document.querySelectorAll(".card");
+
+      if (query) {
+        const input = document.getElementById("search");
+        if (input) input.value = query;
+
+        cards.forEach(card => {
+          const title = card.getAttribute("data-title") || "";
+          const company = card.getAttribute("data-company") || "";
+          const location = card.getAttribute("data-location") || "";
+          const match = title.includes(query) || company.includes(query) || location.includes(query);
+          card.classList.toggle("hidden", !match);
+        });
+      }
     });
   </script>
 
