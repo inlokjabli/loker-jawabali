@@ -10,8 +10,8 @@ image_folder = 'gambar'
 # Ambil semua file markdown
 md_files = glob.glob(f'{markdown_folder}/*.md')
 
-# List kartu untuk homepage
-cards_html = ''
+# List data lowongan
+lowongan_data = []
 
 for md_file in md_files:
     with open(md_file, 'r', encoding='utf-8') as f:
@@ -40,13 +40,13 @@ for md_file in md_files:
     title = metadata.get('title', 'Judul Tidak Ditemukan')
     image = metadata.get('image', '')
     apply_url = metadata.get('apply_url', '')
-    date = metadata.get('date', '')
+    date_str = metadata.get('date', '')
     filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
     # Konversi isi markdown ke HTML
     body_html = markdown.markdown(body_md)
 
-    # Buat HTML halaman lowongan
+    # Buat halaman HTML untuk lowongan
     lowongan_html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -66,7 +66,7 @@ for md_file in md_files:
 
   <main class="job-posting">
     <h1 class="job-title">{title}</h1>
-    {f'<img src="gambar/{image}" alt="Flyer Lowongan" class="job-image">' if image else ''}
+    {f'<img src="{image_folder}/{image}" alt="Flyer Lowongan" class="job-image">' if image else ''}
     <div class="markdown-content">
       {body_html}
     </div>
@@ -84,23 +84,49 @@ for md_file in md_files:
 </html>
 """
 
-    # Simpan halaman lowongan
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(lowongan_html)
+    # Simpan file HTML jika belum ada
+    if not os.path.exists(filename):
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(lowongan_html)
+        print(f"✅ File baru dibuat: {filename}")
+    else:
+        print(f"⚠️  File dilewati (sudah ada): {filename}")
 
-    # Tambahkan kartu ke beranda
+    # Ubah format tanggal untuk ditampilkan
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%d-%m-%Y')
+    except:
+        date_obj = datetime.min  # fallback jika tanggal error
+        formatted_date = 'Tanggal Tidak Valid'
+
+    # Tambahkan data ke list
+    lowongan_data.append({
+        'title': title,
+        'image': image,
+        'filename': filename,
+        'date_obj': date_obj,
+        'formatted_date': formatted_date
+    })
+
+# Urutkan lowongan berdasarkan tanggal terbaru
+lowongan_data.sort(key=lambda x: x['date_obj'], reverse=True)
+
+# Bangun HTML kartu lowongan
+cards_html = ''
+for data in lowongan_data:
     cards_html += f"""
     <div class="card">
-      <a href="{filename}">
-        {f'<img src="gambar/{image}" alt="Flyer" class="card-image">' if image else ''}
-        <h2 class="card-title">{title}</h2>
-        <p class="card-date">{date}</p>
+      <a href="{data['filename']}">
+        {f'<img src="{image_folder}/{data["image"]}" alt="Flyer" class="card-image">' if data["image"] else ''}
+        <h2 class="card-title">{data['title']}</h2>
+        <p class="card-date">{data['formatted_date']}</p>
       </a>
     </div>
     """
 
-# Bangun halaman index.html
-with open('index.html', 'r', encoding='utf-8') as f:
+# Sisipkan ke template index
+with open('template_index.html', 'r', encoding='utf-8') as f:
     index_template = f.read()
 
 new_index = index_template.replace(
@@ -110,3 +136,5 @@ new_index = index_template.replace(
 
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(new_index)
+
+print("🏠 index.html berhasil diperbarui (dengan urutan terbaru).")
