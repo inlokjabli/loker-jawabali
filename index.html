@@ -3,89 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lowongan Kerja Jawa-Bali</title>
-  <link href="style.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
+  <title>Loker Jawa Bali</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <nav class="navbar">
-  <div class="nav-left">
-    <a href="index.html">Beranda</a>
-    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
-  </div>
-  <div class="nav-right">
-    <input type="text" id="search" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
-  </div>
-</nav>
+  <!-- Header -->
+  {% include 'header.html' %}
 
-<script>
-function filterJobs() {
-  const input = document.getElementById("searchInput");
-  const filter = input.value.toLowerCase();
-  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
+  <!-- Navbar (dengan kolom pencarian) -->
+  {% include 'navbar.html' %}
 
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    const text = card.textContent || card.innerText;
-    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
-  }
-}
-</script>
-
-
-  <div class="grid-container">
-    <!-- GENERATED_CARDS -->
-<div class="card"
-          data-title="lowongan digital marketing & sales - pt. ami"
-          data-location="semarang, indonesia"
-          data-company="pt ami"
-        >
-          <a href="loker-sales-dm.html" class="card-link">
-            <img src="gambar/flyer_baru_AMI.jpg" alt="Flyer" class="card-image">
-            <h2 class="card-title">Lowongan Digital Marketing & Sales - PT. AMI</h2>
-            <p class="card-date">12-04-2025</p>
-            <p class='card-company'>PT AMI</p>
-            <p class='card-location'>Semarang, Indonesia</p>
-          </a>
-        </div>
+  <!-- Konten utama -->
+  <main>
+    <section class="job-list">
+      <div class="grid">
+        <!-- Loop konten lowongan -->
         
-        <div class="card"
-          data-title="guru matematika - sma citra bali"
-          data-location="bali, indonesia"
-          data-company="sma citra"
-        >
-          <a href="guru-matematika-bali.html" class="card-link">
-            <img src="gambar/guru-matematika.jpg" alt="Flyer" class="card-image">
-            <h2 class="card-title">Guru Matematika - SMA Citra Bali</h2>
-            <p class="card-date">11-04-2025</p>
-            <p class='card-company'>SMA Citra</p>
-            <p class='card-location'>Bali, Indonesia</p>
-          </a>
-        </div>
-        
-        <div class="card"
-          data-title="judul lowongan - nama perusahaan"
-          data-location="kota, indonesia"
-          data-company="nama pt"
-        >
-          <a href="contoh.html" class="card-link">
-            <img src="gambar/contoh.jpg" alt="Flyer" class="card-image">
-            <h2 class="card-title">Judul Lowongan - Nama Perusahaan</h2>
-            <p class="card-date">10-04-2025</p>
-            <p class='card-company'>Nama PT</p>
-            <p class='card-location'>Kota, Indonesia</p>
-          </a>
-        </div>
-  </div>
+    <a href="contoh.html" class="card" data-title="judul lowongan - nama perusahaan" data-company="" data-location="">
+        <img src="contoh.jpg" alt="Flyer lowongan">
+        <h2>Judul Lowongan - Nama Perusahaan</h2>
+        <p></p>
+        <p></p>
+    </a>
+    
+    <a href="guru-matematika-bali.html" class="card" data-title="guru matematika - sma citra bali" data-company="" data-location="">
+        <img src="guru-matematika.jpg" alt="Flyer lowongan">
+        <h2>Guru Matematika - SMA Citra Bali</h2>
+        <p></p>
+        <p></p>
+    </a>
+    
+    <a href="loker-sales-dm.html" class="card" data-title="lowongan digital marketing & sales - pt. ami" data-company="" data-location="">
+        <img src="flyer_baru_AMI.jpg" alt="Flyer lowongan">
+        <h2>Lowongan Digital Marketing & Sales - PT. AMI</h2>
+        <p></p>
+        <p></p>
+    </a>
+    
+      </div>
+    </section>
+  </main>
 
-  <footer>
-    <div class="footer-links">
-      <a href="privacy-policy.html">Privasi</a>
-      <a href="note.html">Note</a>
-      <a href="about.html">About</a>
-    </div>
-  </footer>
+  <!-- Footer -->
+  {% include 'footer.html' %}
+
+  <!-- Script pencarian -->
+  <script>
+    const searchInput = document.getElementById('search');
+    searchInput?.addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title');
+        const company = card.getAttribute('data-company');
+        const location = card.getAttribute('data-location');
+        const match = title.includes(query) || company.includes(query) || location.includes(query);
+        card.classList.toggle('hidden', !match);
+      });
+    });
+  </script>
+
 </body>
 </html>

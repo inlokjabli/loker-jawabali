@@ -48,22 +48,26 @@
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </div>
   <div class="nav-right">
-    <input type="text" id="search" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
+    <input type="text" id="search" placeholder="Cari lowongan..." />
   </div>
 </nav>
 
 <script>
-function filterJobs() {
-  const input = document.getElementById("searchInput");
-  const filter = input.value.toLowerCase();
-  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
-
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    const text = card.textContent || card.innerText;
-    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
-  }
-}
+  // Script pencarian langsung aktif saat pengguna mengetik
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search");
+    searchInput?.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(card => {
+        const title = card.getAttribute("data-title")?.toLowerCase() || "";
+        const company = card.getAttribute("data-company")?.toLowerCase() || "";
+        const location = card.getAttribute("data-location")?.toLowerCase() || "";
+        const match = title.includes(query) || company.includes(query) || location.includes(query);
+        card.classList.toggle("hidden", !match);
+      });
+    });
+  });
 </script>
 
 
