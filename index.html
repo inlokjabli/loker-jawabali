@@ -10,13 +10,74 @@
 <body>
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <nav>
+  <nav class="navbar">
+  <div class="nav-left">
     <a href="index.html">Beranda</a>
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
-  </nav>
+  </div>
+  <div class="nav-right">
+    <input type="text" id="search" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
+  </div>
+</nav>
+
+<script>
+function filterJobs() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const text = card.textContent || card.innerText;
+    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>
+
 
   <div class="grid-container">
     <!-- GENERATED_CARDS -->
+<div class="card"
+          data-title="lowongan digital marketing & sales - pt. ami"
+          data-location="semarang, indonesia"
+          data-company="pt ami"
+        >
+          <a href="loker-sales-dm.html" class="card-link">
+            <img src="gambar/flyer_baru_AMI.jpg" alt="Flyer" class="card-image">
+            <h2 class="card-title">Lowongan Digital Marketing & Sales - PT. AMI</h2>
+            <p class="card-date">12-04-2025</p>
+            <p class='card-company'>PT AMI</p>
+            <p class='card-location'>Semarang, Indonesia</p>
+          </a>
+        </div>
+        
+        <div class="card"
+          data-title="guru matematika - sma citra bali"
+          data-location="bali, indonesia"
+          data-company="sma citra"
+        >
+          <a href="guru-matematika-bali.html" class="card-link">
+            <img src="gambar/guru-matematika.jpg" alt="Flyer" class="card-image">
+            <h2 class="card-title">Guru Matematika - SMA Citra Bali</h2>
+            <p class="card-date">11-04-2025</p>
+            <p class='card-company'>SMA Citra</p>
+            <p class='card-location'>Bali, Indonesia</p>
+          </a>
+        </div>
+        
+        <div class="card"
+          data-title="judul lowongan - nama perusahaan"
+          data-location="kota, indonesia"
+          data-company="nama pt"
+        >
+          <a href="contoh.html" class="card-link">
+            <img src="gambar/contoh.jpg" alt="Flyer" class="card-image">
+            <h2 class="card-title">Judul Lowongan - Nama Perusahaan</h2>
+            <p class="card-date">10-04-2025</p>
+            <p class='card-company'>Nama PT</p>
+            <p class='card-location'>Kota, Indonesia</p>
+          </a>
+        </div>
   </div>
 
   <footer>

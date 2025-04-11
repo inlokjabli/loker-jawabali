@@ -3,6 +3,10 @@ title: "Lowongan Digital Marketing & Sales - PT. AMI"
 date: 2025-04-12
 image: "flyer_baru_AMI.jpg"
 apply_url: "https://ippconsulting.co.id/rekrutmen-sales-dm"
+company: "PT AMI"
+location: "Semarang, Indonesia"
+employment_type: "FULL_TIME"
+salary: "4000000 per bulan"
 ---
 
 ## Digital Marketing (Penempatan: Semarang)

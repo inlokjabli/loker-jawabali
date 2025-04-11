@@ -7,6 +7,9 @@ MARKDOWN_DIR = 'lowongan'
 IMAGE_DIR = 'gambar'
 TEMPLATE_INDEX = 'template_index.html'
 OUTPUT_INDEX = 'index.html'
+HEADER_FILE = 'header.html'
+NAVBAR_FILE = 'navbar.html'
+FOOTER_FILE = 'footer.html'
 
 def read_markdown_files(folder):
     return glob.glob(f'{folder}/*.md')
@@ -71,7 +74,19 @@ def create_schema(metadata, body_html):
     </script>
     """ if metadata.get('date') else ''
 
+def read_partial(filename):
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"⚠️ File tidak ditemukan: {filename}")
+        return ''
+
 def generate_job_page(filename, metadata, body_html, schema_html):
+    header_html = read_partial(HEADER_FILE)
+    navbar_html = read_partial(NAVBAR_FILE)
+    footer_html = read_partial(FOOTER_FILE)
+
     html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -83,8 +98,8 @@ def generate_job_page(filename, metadata, body_html, schema_html):
   {schema_html}
 </head>
 <body>
-  <!--#include virtual="header.html" -->
-  <!--#include virtual="navbar.html" -->
+  {header_html}
+  {navbar_html}
 
   <main class="job-posting">
     <h1 class="job-title">{metadata['title']}</h1>
@@ -93,7 +108,7 @@ def generate_job_page(filename, metadata, body_html, schema_html):
     {f'<div class="apply-button"><a href="{metadata["apply_url"]}" target="_blank">LAMAR SEKARANG</a></div>' if metadata.get('apply_url') else ''}
   </main>
 
-  <!--#include virtual="footer.html" -->
+  {footer_html}
 </body>
 </html>
 """
@@ -127,6 +142,12 @@ def build_index(cards_html):
         print("❌ Placeholder <!-- GENERATED_CARDS --> tidak ditemukan.")
         return
     final_index = template.replace('<!-- GENERATED_CARDS -->', f'<!-- GENERATED_CARDS -->\n{cards_html.strip()}')
+
+    # Sisipkan komponen modular juga ke index.html
+    final_index = final_index.replace('<!--#include virtual="header.html" -->', read_partial(HEADER_FILE))
+    final_index = final_index.replace('<!--#include virtual="navbar.html" -->', read_partial(NAVBAR_FILE))
+    final_index = final_index.replace('<!--#include virtual="footer.html" -->', read_partial(FOOTER_FILE))
+
     with open(OUTPUT_INDEX, 'w', encoding='utf-8') as f:
         f.write(final_index)
     print("✅ index.html diperbarui.")

@@ -17,14 +17,14 @@
       "image": "gambar/flyer_baru_AMI.jpg",
       "hiringOrganization": {
         "@type": "Organization",
-        "name": "",
+        "name": "PT AMI",
         "sameAs": "https://loker-jawabali.netlify.app/"
       },
       "jobLocation": {
         "@type": "Place",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "",
+          "addressLocality": "Semarang, Indonesia",
           "addressCountry": "ID"
         }
       },
@@ -33,21 +33,44 @@
         "@type": "Country",
         "name": "Indonesia"
       },
-      
+      "baseSalary": {"@type": "MonetaryAmount", "currency": "IDR", "value": {"@type": "QuantitativeValue", "value": "4000000 per bulan", "unitText": "MONTH"}},
       "directApply": true
     }
     </script>
     
 </head>
 <body>
-  <!--#include virtual="header.html" -->
-  <!--#include virtual="navbar.html" -->
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
+
+  <nav class="navbar">
+  <div class="nav-left">
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </div>
+  <div class="nav-right">
+    <input type="text" id="search" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
+  </div>
+</nav>
+
+<script>
+function filterJobs() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const text = card.textContent || card.innerText;
+    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>
+
 
   <main class="job-posting">
     <h1 class="job-title">Lowongan Digital Marketing & Sales - PT. AMI</h1>
     <img src="gambar/flyer_baru_AMI.jpg" alt="Flyer Lowongan" class="job-image">
-    <div class="markdown-content">
-      <h2>Digital Marketing (Penempatan: Semarang)</h2>
+    <div class="markdown-content"><h2>Digital Marketing (Penempatan: Semarang)</h2>
 <ul>
 <li>Pengalaman digital marketing (lead generation &amp; iklan berbayar)  </li>
 <li>Paham strategi periklanan digital dan pengelolaan database  </li>
@@ -64,11 +87,17 @@
 <li>Memiliki jaringan luas dan aktif di media sosial  </li>
 </ul>
 <hr />
-<p>👉 <strong>Segera lamar sekarang melalui link berikut:</strong></p>
-    </div>
+<p>👉 <strong>Segera lamar sekarang melalui link berikut:</strong></p></div>
     <div class="apply-button"><a href="https://ippconsulting.co.id/rekrutmen-sales-dm" target="_blank">LAMAR SEKARANG</a></div>
   </main>
 
-  <!--#include virtual="footer.html" -->
+  <footer>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privasi</a>
+    <a href="note.html">Note</a>
+    <a href="about.html">About</a>
+  </div>
+</footer>
+
 </body>
 </html>

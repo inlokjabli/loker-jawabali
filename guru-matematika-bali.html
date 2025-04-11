@@ -17,47 +17,76 @@
       "image": "gambar/guru-matematika.jpg",
       "hiringOrganization": {
         "@type": "Organization",
-        "name": "",
+        "name": "SMA Citra",
         "sameAs": "https://loker-jawabali.netlify.app/"
       },
       "jobLocation": {
         "@type": "Place",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "",
+          "addressLocality": "Bali, Indonesia",
           "addressCountry": "ID"
         }
       },
-      "employmentType": "FULL_TIME",
+      "employmentType": "FULL_TIME" # Opsi lain: PART_TIME, CONTRACTOR, INTERN",
       "applicantLocationRequirements": {
         "@type": "Country",
         "name": "Indonesia"
       },
-      
+      "baseSalary": {"@type": "MonetaryAmount", "currency": "IDR", "value": {"@type": "QuantitativeValue", "value": "4000000 per bulan", "unitText": "MONTH"}},
       "directApply": true
     }
     </script>
     
 </head>
 <body>
-  <!--#include virtual="header.html" -->
-  <!--#include virtual="navbar.html" -->
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
+
+  <nav class="navbar">
+  <div class="nav-left">
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </div>
+  <div class="nav-right">
+    <input type="text" id="search" onkeyup="filterJobs()" placeholder="Cari lowongan..." />
+  </div>
+</nav>
+
+<script>
+function filterJobs() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toLowerCase();
+  const cards = document.getElementsByClassName("card"); // <- sesuaikan dengan generate.py
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const text = card.textContent || card.innerText;
+    card.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+  }
+}
+</script>
+
 
   <main class="job-posting">
     <h1 class="job-title">Guru Matematika - SMA Citra Bali</h1>
     <img src="gambar/guru-matematika.jpg" alt="Flyer Lowongan" class="job-image">
-    <div class="markdown-content">
-      <p>SMA Citra Bali membuka lowongan sebagai <strong>Guru Matematika</strong> dengan kualifikasi:</p>
+    <div class="markdown-content"><p>SMA Citra Bali membuka lowongan sebagai <strong>Guru Matematika</strong> dengan kualifikasi:</p>
 <ul>
 <li>Lulusan S1 Pendidikan Matematika</li>
 <li>Pengalaman mengajar minimal 1 tahun</li>
 <li>Bersedia ditempatkan di Denpasar</li>
 </ul>
-<p>Silakan kirim lamaran melalui:</p>
-    </div>
+<p>Silakan kirim lamaran melalui:</p></div>
     <div class="apply-button"><a href="https://s.id/lamar-citra" target="_blank">LAMAR SEKARANG</a></div>
   </main>
 
-  <!--#include virtual="footer.html" -->
+  <footer>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privasi</a>
+    <a href="note.html">Note</a>
+    <a href="about.html">About</a>
+  </div>
+</footer>
+
 </body>
 </html>
