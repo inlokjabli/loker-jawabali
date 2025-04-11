@@ -2,58 +2,29 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loker Jawa Bali</title>
-  <meta name="description" content="Lowongan kerja terbaru area Jawa & Bali. Update setiap hari." />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lowongan Kerja Jawa-Bali</title>
+  <link href="style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <!-- ✅ Header -->
-  <div class="site-header">
-    LOKER JAWA BALI
-  </div>
-
-  <!-- ✅ Navbar (termasuk pencarian) -->
   <nav>
-    <div class="nav-links">
-      <a href="index.html">Beranda</a>
-      <a href="about.html">Tentang</a>
-      <a href="note.html">Catatan</a>
-      <a href="privacy-policy.html">Privasi</a>
-    </div>
-    <input type="text" id="search" placeholder="Cari kota atau posisi..." onkeyup="filterJobs()" />
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
   </nav>
 
-  <!-- ✅ Konten Utama (Grid Lowongan) -->
-  <div class="grid-container" id="job-list">
-    <!-- 🔄 Lowongan akan digenerate oleh generate.py -->
-    {{LOWONGAN}}
+  <div class="grid-container">
+    <!-- GENERATED_CARDS -->
   </div>
 
-  <!-- ✅ Footer -->
   <footer>
     <div class="footer-links">
-      <a href="about.html">Tentang</a>
-      <a href="note.html">Catatan</a>
       <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
     </div>
-    <p>&copy; 2025 Loker Jawa Bali</p>
   </footer>
-
-  <!-- ✅ Script untuk pencarian -->
-  <script>
-    function filterJobs() {
-      const input = document.getElementById("search").value.toLowerCase();
-      const cards = document.querySelectorAll("#job-list .card");
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(input) ? "block" : "none";
-      });
-    }
-  </script>
-
 </body>
 </html>

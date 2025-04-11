@@ -13,7 +13,7 @@ for md_file in md_files:
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Pisahkan front matter (metadata) dan isi markdown
+    # Pisahkan front matter dan isi markdown
     if content.startswith('---'):
         parts = content.split('---')
         metadata_raw = parts[1] if len(parts) >= 3 else ''
@@ -21,14 +21,14 @@ for md_file in md_files:
     else:
         metadata_raw, body_md = '', content
 
-    # Parsing metadata menjadi dictionary
+    # Parsing metadata
     metadata = {}
     for line in metadata_raw.strip().split('\n'):
         if ':' in line:
             key, value = line.split(':', 1)
             metadata[key.strip()] = value.strip().strip('"')
 
-    # Ambil data dari metadata
+    # Ambil data metadata
     title = metadata.get('title', 'Judul Tidak Ditemukan')
     image = metadata.get('image', '')
     apply_url = metadata.get('apply_url', '')
@@ -43,9 +43,6 @@ for md_file in md_files:
     if salary_raw:
         salary_cleaned = salary_raw.replace('Rp', '').replace('.', '').split('-')[0].strip()
 
-    # Buat nama file output
-    filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
-
     # Konversi Markdown ke HTML
     body_html = markdown.markdown(body_md)
 
@@ -57,7 +54,10 @@ for md_file in md_files:
         date_obj = datetime.min
         formatted_date = 'Tanggal Tidak Valid'
 
-    # Schema.org JobPosting (Google Jobs)
+    # Buat nama file output
+    filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
+
+    # Schema.org
     jobposting_schema = f"""
     <script type="application/ld+json">
     {{
@@ -91,7 +91,7 @@ for md_file in md_files:
     </script>
     """ if date_str else ''
 
-    # HTML untuk halaman lowongan
+    # HTML halaman lowongan
     lowongan_html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -130,7 +130,7 @@ for md_file in md_files:
 </html>
 """
 
-    # Tulis file HTML jika belum ada
+    # Simpan file jika belum ada
     if not os.path.exists(filename):
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(lowongan_html)
@@ -171,12 +171,13 @@ for data in lowongan_data:
 with open('template_index.html', 'r', encoding='utf-8') as f:
     index_template = f.read()
 
-new_index = index_template.replace(
-    '<!-- GENERATED_CARDS -->',
-    '<!-- GENERATED_CARDS -->\n' + cards_html.strip()
-)
-
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(new_index)
-
-print("🏠 index.html berhasil diperbarui (dengan urutan terbaru).")
+if '<!-- GENERATED_CARDS -->' in index_template:
+    new_index = index_template.replace(
+        '<!-- GENERATED_CARDS -->',
+        '<!-- GENERATED_CARDS -->\n' + cards_html.strip()
+    )
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(new_index)
+    print("✅ index.html berhasil diperbarui (dengan urutan terbaru).")
+else:
+    print("❌ Placeholder <!-- GENERATED_CARDS --> tidak ditemukan di template_index.html.")
