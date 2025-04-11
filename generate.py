@@ -3,21 +3,16 @@ import glob
 import markdown
 from datetime import datetime
 
-# Konfigurasi folder markdown dan gambar
 markdown_folder = 'lowongan'
 image_folder = 'gambar'
 
-# Ambil semua file markdown
 md_files = glob.glob(f'{markdown_folder}/*.md')
-
-# List data lowongan
 lowongan_data = []
 
 for md_file in md_files:
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Pisahkan metadata dan isi markdown
     if content.startswith('---'):
         parts = content.split('---')
         if len(parts) >= 3:
@@ -30,7 +25,6 @@ for md_file in md_files:
         metadata_raw = ''
         body_md = content
 
-    # Ambil metadata
     metadata = {}
     for line in metadata_raw.strip().split('\n'):
         if ':' in line:
@@ -43,10 +37,39 @@ for md_file in md_files:
     date_str = metadata.get('date', '')
     filename = os.path.splitext(os.path.basename(md_file))[0] + '.html'
 
-    # Konversi isi markdown ke HTML
     body_html = markdown.markdown(body_md)
 
-    # Buat halaman HTML untuk lowongan
+    # Format tanggal
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%d-%m-%Y')
+    except:
+        date_obj = datetime.min
+        formatted_date = 'Tanggal Tidak Valid'
+
+    # Schema.org JobPosting
+    jobposting_schema = f"""
+    <script type="application/ld+json">
+    {{
+      "@context": "https://schema.org",
+      "@type": "JobPosting",
+      "title": "{title}",
+      "datePosted": "{date_str}",
+      "description": "{body_md.replace('"', "'").replace('\n', ' ')}",
+      {"\"image\": \"" + image_folder + "/" + image + "\"," if image else ""}
+      {"\"hiringOrganization\": {\"@type\": \"Organization\", \"name\": \"\", \"sameAs\": \"\"}," if True else ""}
+      {"\"jobLocation\": {\"@type\": \"Place\", \"address\": {\"@type\": \"PostalAddress\", \"addressCountry\": \"ID\"}},"}
+      "employmentType": "FULL_TIME",
+      "applicantLocationRequirements": {{
+        "@type": "Country",
+        "name": "Indonesia"
+      }},
+      "directApply": true
+    }}
+    </script>
+    """ if date_str else ''
+
+    # HTML Halaman Lowongan
     lowongan_html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -55,6 +78,7 @@ for md_file in md_files:
   <title>{title}</title>
   <link href="style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
+  {jobposting_schema}
 </head>
 <body>
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
@@ -70,7 +94,7 @@ for md_file in md_files:
     <div class="markdown-content">
       {body_html}
     </div>
-    {f'<div class="apply-button"><a href="{apply_url}" target="_blank">Lamar Sekarang</a></div>' if apply_url else ''}
+    {f'<div class="apply-button"><a href="{apply_url}" target="_blank">LAMAR SEKARANG</a></div>' if apply_url else ''}
   </main>
 
   <footer>
@@ -84,7 +108,6 @@ for md_file in md_files:
 </html>
 """
 
-    # Simpan file HTML jika belum ada
     if not os.path.exists(filename):
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(lowongan_html)
@@ -92,15 +115,6 @@ for md_file in md_files:
     else:
         print(f"⚠️  File dilewati (sudah ada): {filename}")
 
-    # Ubah format tanggal untuk ditampilkan
-    try:
-        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
-        formatted_date = date_obj.strftime('%d-%m-%Y')
-    except:
-        date_obj = datetime.min  # fallback jika tanggal error
-        formatted_date = 'Tanggal Tidak Valid'
-
-    # Tambahkan data ke list
     lowongan_data.append({
         'title': title,
         'image': image,
@@ -109,15 +123,15 @@ for md_file in md_files:
         'formatted_date': formatted_date
     })
 
-# Urutkan lowongan berdasarkan tanggal terbaru
+# Urutkan dari yang terbaru
 lowongan_data.sort(key=lambda x: x['date_obj'], reverse=True)
 
-# Bangun HTML kartu lowongan
+# Kartu HTML
 cards_html = ''
 for data in lowongan_data:
     cards_html += f"""
     <div class="card">
-      <a href="{data['filename']}">
+      <a href="{data['filename']}" class="card-link">
         {f'<img src="{image_folder}/{data["image"]}" alt="Flyer" class="card-image">' if data["image"] else ''}
         <h2 class="card-title">{data['title']}</h2>
         <p class="card-date">{data['formatted_date']}</p>
@@ -125,7 +139,7 @@ for data in lowongan_data:
     </div>
     """
 
-# Sisipkan ke template index
+# Update index.html
 with open('template_index.html', 'r', encoding='utf-8') as f:
     index_template = f.read()
 
