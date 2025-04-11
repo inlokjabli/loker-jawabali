@@ -302,10 +302,17 @@ footer {
 }
 
 .nav-left a {
-  margin-right: 15px;
-  color: limegreen;
+  color: limegreen !important;
   font-family: 'Coming Soon', cursive;
   text-decoration: none;
+  font-weight: bold;
+  transition: o.3s;
+  font-size: 18px;
+}
+
+.nav-left a:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 .nav-right input {
@@ -322,7 +329,7 @@ footer {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* ✨ Tambahan kecil untuk sentuhan akhir */
