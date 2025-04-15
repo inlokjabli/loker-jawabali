@@ -3,37 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="../style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Permanent+Marker&display=swap" rel="stylesheet">
-  <script type="application/ld+json">
-  {{ schema }}
-  </script>
+  <title>Lowongan Kerja Jawa-Bali</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header -->
-  <!--#include virtual="../header.html" -->
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <!-- Navbar -->
-  <!--#include virtual="../navbar.html" -->
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </nav>
 
-  <main>
-    <h1 class="job-title">{{ title }}</h1>
-    {% if image %}
-    <img src="{{ image }}" alt="Flyer Lowongan" class="job-flyer">
-    {% endif %}
-    <article class="job-content">
-      {{ content }}
-    </article>
+  <div class="grid-container">
+    <!-- GENERATED_CARDS -->
+    <!-- END_GENERATED_CARDS -->
+  </div>
 
-    {% if apply_url %}
-    <div class="apply-button-container">
-      <a href="{{ apply_url }}" class="apply-button">Lamar Sekarang</a>
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
     </div>
-    {% endif %}
-  </main>
-
-  <!-- Footer -->
-  <!--#include virtual="../footer.html" -->
+  </footer>
 </body>
 </html>

@@ -1,8 +1,12 @@
-<nav class="navbar">
-  <a href="index.html">Beranda</a>
-  <a href="about.html">Temukan Kami</a>
-  <form class="search-form" action="index.html" method="get">
-    <input type="text" name="q" placeholder="Cari lowongan..." value="{{ query }}">
-    <button type="submit">Cari</button>
-  </form>
+<nav>
+  <ul>
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="about.html">Temukan Kami</a></li>
+    <li>
+      <form action="index.html" method="GET">
+        <input type="text" name="cari" placeholder="Cari lowongan..." />
+        <button type="submit">Cari</button>
+      </form>
+    </li>
+  </ul>
 </nav>
