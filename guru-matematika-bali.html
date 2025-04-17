@@ -33,7 +33,7 @@
         "@type": "Country",
         "name": "Indonesia"
       },
-      "baseSalary": {"@type": "MonetaryAmount", "currency": "IDR", "value": {"@type": "QuantitativeValue", "value": "4000000 per bulan", "unitText": "MONTH"}},
+      "baseSalary": {{"@type": "MonetaryAmount", "currency": "IDR", "value": {{"@type": "QuantitativeValue", "value": "4000000 per bulan", "unitText": "MONTH"}}}},
       "directApply": true
     }
     </script>
@@ -42,55 +42,32 @@
 <body>
   <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <nav class="navbar">
-  <div class="nav-left">
+  <nav>
     <a href="index.html">Beranda</a>
     <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
-  </div>
-  <div class="nav-right">
-    <input type="text" id="search" placeholder="Cari lowongan..." />
-  </div>
-</nav>
-
-<script>
-  // Script pencarian langsung aktif saat pengguna mengetik
-  document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById("search");
-    searchInput?.addEventListener("input", function () {
-      const query = this.value.toLowerCase();
-      const cards = document.querySelectorAll(".card");
-      cards.forEach(card => {
-        const title = card.getAttribute("data-title")?.toLowerCase() || "";
-        const company = card.getAttribute("data-company")?.toLowerCase() || "";
-        const location = card.getAttribute("data-location")?.toLowerCase() || "";
-        const match = title.includes(query) || company.includes(query) || location.includes(query);
-        card.classList.toggle("hidden", !match);
-      });
-    });
-  });
-</script>
-
+  </nav>
 
   <main class="job-posting">
     <h1 class="job-title">Guru Matematika - SMA Citra Bali</h1>
     <img src="gambar/guru-matematika.jpg" alt="Flyer Lowongan" class="job-image">
-    <div class="markdown-content"><p>SMA Citra Bali membuka lowongan sebagai <strong>Guru Matematika</strong> dengan kualifikasi:</p>
+    <div class="markdown-content">
+      <p>SMA Citra Bali membuka lowongan sebagai <strong>Guru Matematika</strong> dengan kualifikasi:</p>
 <ul>
 <li>Lulusan S1 Pendidikan Matematika</li>
 <li>Pengalaman mengajar minimal 1 tahun</li>
 <li>Bersedia ditempatkan di Denpasar</li>
 </ul>
-<p>Silakan kirim lamaran melalui:</p></div>
+<p>Silakan kirim lamaran melalui:</p>
+    </div>
     <div class="apply-button"><a href="https://s.id/lamar-citra" target="_blank">LAMAR SEKARANG</a></div>
   </main>
 
   <footer>
-  <div class="footer-links">
-    <a href="privacy-policy.html">Privasi</a>
-    <a href="note.html">Note</a>
-    <a href="about.html">About</a>
-  </div>
-</footer>
-
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
 </body>
 </html>

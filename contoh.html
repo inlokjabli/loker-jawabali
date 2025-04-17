@@ -3,37 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="../style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Permanent+Marker&display=swap" rel="stylesheet">
-  <script type="application/ld+json">
-  {{ schema }}
-  </script>
+  <title>Judul Lowongan - Nama Perusahaan</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Coming+Soon&display=swap" rel="stylesheet">
+  
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "JobPosting",
+      "title": "Judul Lowongan - Nama Perusahaan",
+      "datePosted": "2025-04-10",
+      "description": "<h2>Nama Posisi Pertama (Penempatan: Lokasi)</h2> <p><strong>Penempatan:</strong> Kota, Provinsi  <strong>Gaji:</strong> Rp4.000.000 per bulan<br /> <strong>Jenis Pekerjaan:</strong> Full Time </p> <h2>Nama Posisi Kedua (Penempatan: Lokasi)</h2> <ul> <li>Poin keahlian atau syarat 1</li> <li>Poin keahlian atau syarat 2</li> <li>Poin keahlian atau syarat 3</li> </ul> <h3>Deskripsi Pekerjaan:</h3> <p>Kami mencari Digital Marketing yang berpengalaman untuk mengelola kampanye sosial media, strategi SEO, dan iklan berbayar.</p> <h3>Kualifikasi:</h3> <ul> <li>Kualifikasi 1</li> <li>Kualifikasi 2</li> <li>Kualifikasi 3</li> </ul> <hr /> <p><strong>Segera lamar sekarang melalui link berikut:</strong></p>",
+      "image": "gambar/gambar/contoh.jpg",
+      "hiringOrganization": {
+        "@type": "Organization",
+        "name": "Nama PT",
+        "sameAs": "https://loker-jawabali.netlify.app/"
+      },
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kota, Provinsi",
+          "addressCountry": "ID"
+        }
+      },
+      "employmentType": "FULL_TIME",
+      "applicantLocationRequirements": {
+        "@type": "Country",
+        "name": "Indonesia"
+      },
+      
+      "directApply": true
+    }
+    </script>
+    
 </head>
 <body>
-  <!-- Header -->
-  <!--#include virtual="../header.html" -->
+  <div class="site-header">Lowongan Kerja Jawa-Bali</div>
 
-  <!-- Navbar -->
-  <!--#include virtual="../navbar.html" -->
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="https://s.id/info_loker_jawabali" target="_blank">Temukan Kami</a>
+  </nav>
 
-  <main>
-    <h1 class="job-title">{{ title }}</h1>
-    {% if image %}
-    <img src="{{ image }}" alt="Flyer Lowongan" class="job-flyer">
-    {% endif %}
-    <article class="job-content">
-      {{ content }}
-    </article>
-
-    {% if apply_url %}
-    <div class="apply-button-container">
-      <a href="{{ apply_url }}" class="apply-button">Lamar Sekarang</a>
+  <main class="job-posting">
+    <h1 class="job-title">Judul Lowongan - Nama Perusahaan</h1>
+    <img src="gambar/gambar/contoh.jpg" alt="Flyer Lowongan" class="job-image">
+    <div class="markdown-content">
+      <h2>Nama Posisi Pertama (Penempatan: Lokasi)</h2>
+<p><strong>Penempatan:</strong> Kota, Provinsi 
+<strong>Gaji:</strong> Rp4.000.000 per bulan<br />
+<strong>Jenis Pekerjaan:</strong> Full Time </p>
+<h2>Nama Posisi Kedua (Penempatan: Lokasi)</h2>
+<ul>
+<li>Poin keahlian atau syarat 1</li>
+<li>Poin keahlian atau syarat 2</li>
+<li>Poin keahlian atau syarat 3</li>
+</ul>
+<h3>Deskripsi Pekerjaan:</h3>
+<p>Kami mencari Digital Marketing yang berpengalaman untuk mengelola kampanye sosial media, strategi SEO, dan iklan berbayar.</p>
+<h3>Kualifikasi:</h3>
+<ul>
+<li>Kualifikasi 1</li>
+<li>Kualifikasi 2</li>
+<li>Kualifikasi 3</li>
+</ul>
+<hr />
+<p><strong>Segera lamar sekarang melalui link berikut:</strong></p>
     </div>
-    {% endif %}
+    
   </main>
 
-  <!-- Footer -->
-  <!--#include virtual="../footer.html" -->
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privasi</a>
+      <a href="note.html">Note</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
 </body>
 </html>
